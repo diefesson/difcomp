@@ -2,29 +2,32 @@ package com.diefesson.diflang.token;
 
 public enum TokenType {
 
-    KW_INT(0, "int"),
-    KW_PRINT(1, "print"),
-    OP_ASSING(2, "="),
-    OP_ADD(3, "+"),
-    OP_SUB(4, "-"),
-    OP_MUL(5, "*"),
-    OP_DIV(6, "/"),
-    IDENTIFIER(7, null),
-    CONST_STR(8, null),
-    CONST_INT(9, null),
-    PUNC_END(10, "\n"),
-    END(11, null);
+    KW_INT(1),
+    KW_PRINT(2),
+    OP_ASSING(3),
+    OP_ADD(4),
+    OP_SUB(5),
+    OP_MUL(6),
+    OP_DIV(7),
+    IDENTIFIER(8),
+    CONST_STR(9),
+    CONST_INT(10),
+    PUNC_END(11),
+    END(12);
 
     public final int id;
-    public final String symbol;
 
-    TokenType(int id, String symbol) {
+    TokenType(int id) {
         this.id = id;
-        this.symbol = symbol;
     }
 
-    boolean hasSymbol() {
-        return this.symbol != null;
+    public static TokenType ofId(int id) {
+        for (TokenType tt : values()) {
+            if (tt.id == id) {
+                return tt;
+            }
+        }
+        throw new IllegalArgumentException("invalid token type id: %d".formatted(id));
     }
 
 }

@@ -1,4 +1,4 @@
-package com.diefesson.diflang;
+package com.diefesson.diflang.error;
 
 public class CompileException extends Exception {
 
@@ -8,6 +8,10 @@ public class CompileException extends Exception {
 
     public CompileException(Throwable cause) {
         super(cause);
+    }
+
+    public CompileException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }

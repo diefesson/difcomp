@@ -2,26 +2,17 @@ package com.diefesson.diflang.token;
 
 public class Token {
 
-    private final TokenType type;
+    public final int typeId;
+    public final String lexeme;
 
-    public Token(TokenType type) {
-        this.type = type;
-    }
-
-    public TokenType getType() {
-        return type;
-    }
-
-    public String getSymbol() {
-        return type.symbol;
+    public Token(int typeId, String lexeme) {
+        this.typeId = typeId;
+        this.lexeme = lexeme;
     }
 
     @Override
     public String toString() {
-        String className = getClass().getName();
-        String typeName = type.name();
-        String symbol = getSymbol();
-        return "< %s %s %s >".formatted(className, typeName, symbol);
+        return "< %s %s >".formatted(typeId, lexeme);
     }
 
 }
