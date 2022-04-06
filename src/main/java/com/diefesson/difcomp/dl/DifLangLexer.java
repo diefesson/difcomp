@@ -1,15 +1,18 @@
-package com.diefesson.diflang.lexer;
+package com.diefesson.difcomp.dl;
 
 import java.io.Reader;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import com.diefesson.diflang.error.LexerException;
-import com.diefesson.diflang.token.IdentifierToken;
-import com.diefesson.diflang.token.IntToken;
-import com.diefesson.diflang.token.StringToken;
-import com.diefesson.diflang.token.Token;
-import com.diefesson.diflang.token.TokenType;
+import com.diefesson.difcomp.dl.token.IdentifierToken;
+import com.diefesson.difcomp.dl.token.IntToken;
+import com.diefesson.difcomp.dl.token.StringToken;
+import com.diefesson.difcomp.dl.token.TokenType;
+import com.diefesson.difcomp.error.LexerException;
+import com.diefesson.difcomp.lexer.IgnoreHandler;
+import com.diefesson.difcomp.lexer.Lexer;
+import com.diefesson.difcomp.lexer.SimpleHandler;
+import com.diefesson.difcomp.token.Token;
 
 public class DifLangLexer extends Lexer {
 
@@ -49,7 +52,7 @@ public class DifLangLexer extends Lexer {
     private Token handleString(String match, Scanner scanner) throws LexerException {
         try {
             String processed = processString(match);
-            return new StringToken(processed);
+            return new StringToken(match, processed);
         } catch (NoSuchElementException e) {
             throw new LexerException("string lexing exception at line %d ".formatted(lineCount), e);
         }

@@ -1,4 +1,4 @@
-package com.diefesson.diflang.lexer;
+package com.diefesson.difcomp.lexer;
 
 import java.io.Reader;
 import java.util.ArrayList;
@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import com.diefesson.diflang.error.LexerException;
-import com.diefesson.diflang.token.Token;
+import com.diefesson.difcomp.error.LexerException;
+import com.diefesson.difcomp.token.Token;
 
 public class Lexer implements AutoCloseable {
 
@@ -48,7 +48,11 @@ public class Lexer implements AutoCloseable {
         if (!scanner.hasNext()) {
             return new Token(0, "");
         }
-        throw new LexerException("unexpected character: \"%s\"".formatted(scanner.findWithinHorizon(".", 1)));
+        String unexpected = scanner.findWithinHorizon("[.\n]", 1);
+        if (unexpected.equals("\n")) {
+            unexpected = "\\n";
+        }
+        throw new LexerException("unexpected character: \"%s\"".formatted(unexpected));
     }
 
     @Override

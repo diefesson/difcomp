@@ -1,4 +1,4 @@
-package com.diefesson.diflang.token;
+package com.diefesson.difcomp.dl.token;
 
 public enum TokenType {
 

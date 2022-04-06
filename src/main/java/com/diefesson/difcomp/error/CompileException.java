@@ -1,4 +1,4 @@
-package com.diefesson.diflang.error;
+package com.diefesson.difcomp.error;
 
 public class CompileException extends Exception {
 

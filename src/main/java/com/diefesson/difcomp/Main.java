@@ -1,12 +1,13 @@
-package com.diefesson.diflang;
+package com.diefesson.difcomp;
 
 import java.io.StringReader;
-import com.diefesson.diflang.lexer.DifLangLexer;
-import com.diefesson.diflang.token.Token;
+
+import com.diefesson.difcomp.dl.DifLangLexer;
+import com.diefesson.difcomp.token.Token;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        DifLangLexer lexer = new DifLangLexer(new StringReader("int intabc"));
+        DifLangLexer lexer = new DifLangLexer(new StringReader("\"coisa\"\nint"));
         Token token;
         do {
             token = lexer.next();
