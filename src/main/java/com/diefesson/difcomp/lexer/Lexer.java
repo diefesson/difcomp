@@ -16,6 +16,11 @@ public class Lexer implements AutoCloseable {
     private final List<Pattern> patterns;
     private final List<LexerHandler> handlers;
 
+    // Statistics
+    private int currentRow = 0;
+    private int currentColumn = 0;
+    private StringBuilder currentLine = new StringBuilder();
+
     public Lexer(Reader reader, int horizon) {
         this.scanner = new Scanner(reader);
         this.horizon = horizon;
@@ -36,23 +41,47 @@ public class Lexer implements AutoCloseable {
         return token;
     }
 
-    private final Token tryNext() throws LexerException {
+    private Token tryNext() throws LexerException {
         for (int i = 0; i < patterns.size(); i++) {
             Pattern p = patterns.get(i);
             LexerHandler h = handlers.get(i);
             String match = scanner.findWithinHorizon(p, horizon);
             if (match != null) {
+                updateStatistics(match);
                 return h.handle(match, scanner);
             }
         }
         if (!scanner.hasNext()) {
             return new Token(0, "");
         }
-        String unexpected = scanner.findWithinHorizon("[.\n]", 1);
-        if (unexpected.equals("\n")) {
-            unexpected = "\\n";
+        throw createUnexpectedExcepetion();
+    }
+
+    private void updateStatistics(String match) {
+        currentLine.append(match);
+        for (int lineEndPos = currentLine.indexOf("\n"); lineEndPos != -1; lineEndPos = currentLine.indexOf("\n")) {
+            currentRow++;
+            System.out.println(lineEndPos);
+            currentLine.delete(0, lineEndPos + 1);
         }
-        throw new LexerException("unexpected character: \"%s\"".formatted(unexpected));
+        currentColumn = currentLine.length();
+    }
+
+    private LexerException createUnexpectedExcepetion() {
+        String unexpected = scanner
+                .findWithinHorizon("(.|\n)+", horizon)
+                .replaceAll("\n", " ");
+        StringBuilder message = new StringBuilder();
+        message
+                .append("unexpected char at %d:%d\n".formatted(currentRow, currentColumn))
+                .append(currentLine)
+                .append(unexpected)
+                .append("\n");
+        for (int i = 0; i < currentColumn; i++) {
+            message.append("-");
+        }
+        message.append("^");
+        return new LexerException(message.toString());
     }
 
     @Override
