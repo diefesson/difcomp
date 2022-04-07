@@ -7,7 +7,7 @@ import com.diefesson.difcomp.token.Token;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        DifLangLexer lexer = new DifLangLexer(new StringReader("\"coisa\"\nint"));
+        DifLangLexer lexer = new DifLangLexer(new StringReader("a\na"));
         Token token;
         do {
             token = lexer.next();

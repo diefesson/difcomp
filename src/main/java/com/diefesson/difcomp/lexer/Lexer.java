@@ -15,17 +15,14 @@ public class Lexer implements AutoCloseable {
     private final int horizon;
     private final List<Pattern> patterns;
     private final List<LexerHandler> handlers;
-
-    // Statistics
-    private int currentRow = 0;
-    private int currentColumn = 0;
-    private StringBuilder currentLine = new StringBuilder();
+    private final LexerStatistics statistics;
 
     public Lexer(Reader reader, int horizon) {
         this.scanner = new Scanner(reader);
         this.horizon = horizon;
         this.patterns = new ArrayList<>();
         this.handlers = new ArrayList<>();
+        this.statistics = new LexerStatistics();
     }
 
     public void on(String pattern, LexerHandler handler) {
@@ -47,41 +44,15 @@ public class Lexer implements AutoCloseable {
             LexerHandler h = handlers.get(i);
             String match = scanner.findWithinHorizon(p, horizon);
             if (match != null) {
-                updateStatistics(match);
+                statistics.updateStatistics(match);
                 return h.handle(match, scanner);
             }
         }
-        if (!scanner.hasNext()) {
+        if (scanner.findWithinHorizon("\\z", 1) != null) {
             return new Token(0, "");
         }
-        throw createUnexpectedExcepetion();
-    }
-
-    private void updateStatistics(String match) {
-        currentLine.append(match);
-        for (int lineEndPos = currentLine.indexOf("\n"); lineEndPos != -1; lineEndPos = currentLine.indexOf("\n")) {
-            currentRow++;
-            System.out.println(lineEndPos);
-            currentLine.delete(0, lineEndPos + 1);
-        }
-        currentColumn = currentLine.length();
-    }
-
-    private LexerException createUnexpectedExcepetion() {
-        String unexpected = scanner
-                .findWithinHorizon("(.|\n)+", horizon)
-                .replaceAll("\n", " ");
-        StringBuilder message = new StringBuilder();
-        message
-                .append("unexpected char at %d:%d\n".formatted(currentRow, currentColumn))
-                .append(currentLine)
-                .append(unexpected)
-                .append("\n");
-        for (int i = 0; i < currentColumn; i++) {
-            message.append("-");
-        }
-        message.append("^");
-        return new LexerException(message.toString());
+        String unexpected = scanner.findWithinHorizon("(.|\n)+", horizon);
+        throw statistics.createUnexpectedExcepetion(unexpected);
     }
 
     @Override
