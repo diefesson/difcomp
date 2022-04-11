@@ -20,11 +20,7 @@ public class DifLangLexer extends Lexer {
 
     public DifLangLexer(Reader reader) {
         super(reader, 32);
-        // TODO: reorganize classes packages
-        // TODO: reorganize token priority
         on(Patterns.WHITESPACE, new IgnoreHandler());
-        on(Patterns.KW_INT, new SimpleHandler(TokenType.KW_INT.id));
-        on(Patterns.KW_PRINT, new SimpleHandler(TokenType.KW_PRINT.id));
         on(Patterns.OP_ASSING, new SimpleHandler(TokenType.OP_ASSING.id));
         on(Patterns.OP_ADD, new SimpleHandler(TokenType.OP_ADD.id));
         on(Patterns.OP_SUB, new SimpleHandler(TokenType.OP_SUB.id));
@@ -37,7 +33,14 @@ public class DifLangLexer extends Lexer {
     }
 
     private Token handleIdentifier(String match, Scanner scanner) {
-        return new IdentifierToken(match);
+        switch (match) {
+            case Patterns.KW_INT:
+                return new Token(TokenType.KW_INT.id, match);
+            case Patterns.KW_PRINT:
+                return new Token(TokenType.KW_PRINT.id, match);
+            default:
+                return new IdentifierToken(match);
+        }
     }
 
     private Token handleInt(String match, Scanner scanner) throws LexerException {

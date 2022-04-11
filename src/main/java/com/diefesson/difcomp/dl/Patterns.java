@@ -2,7 +2,7 @@ package com.diefesson.difcomp.dl;
 
 public final class Patterns {
 
-    public static final String WHITESPACE = "\\G ";
+    public static final String WHITESPACE = "\\G( |\n|\r|\r\n)+";
     public static final String KW_INT = "\\Gint";
     public static final String KW_PRINT = "\\Gprint";
     public static final String OP_ASSING = "\\G=";

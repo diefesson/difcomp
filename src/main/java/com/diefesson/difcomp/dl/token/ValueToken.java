@@ -1,4 +1,6 @@
-package com.diefesson.difcomp.token;
+package com.diefesson.difcomp.dl.token;
+
+import com.diefesson.difcomp.token.Token;
 
 public abstract class ValueToken<T> extends Token {
 

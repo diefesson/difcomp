@@ -12,7 +12,7 @@ public class Token {
 
     @Override
     public String toString() {
-        return "< %s %s >".formatted(typeId, lexeme);
+        return "< %s \"%s\" >".formatted(typeId, lexeme);
     }
 
 }

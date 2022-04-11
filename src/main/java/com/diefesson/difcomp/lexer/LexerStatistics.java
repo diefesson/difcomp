@@ -12,7 +12,6 @@ class LexerStatistics {
         currentLine.append(match);
         for (int lineEndPos = currentLine.indexOf("\n"); lineEndPos != -1; lineEndPos = currentLine.indexOf("\n")) {
             currentRow++;
-            System.out.println(lineEndPos);
             currentLine.delete(0, lineEndPos + 1);
         }
         currentColumn = currentLine.length();

@@ -27,7 +27,7 @@ public enum TokenType {
                 return tt;
             }
         }
-        throw new IllegalArgumentException("invalid token type id: %d".formatted(id));
+        return null;
     }
 
 }
