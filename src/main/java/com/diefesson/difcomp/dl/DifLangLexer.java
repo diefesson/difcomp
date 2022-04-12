@@ -12,6 +12,7 @@ import com.diefesson.difcomp.error.LexerException;
 import com.diefesson.difcomp.lexer.IgnoreHandler;
 import com.diefesson.difcomp.lexer.Lexer;
 import com.diefesson.difcomp.lexer.SimpleHandler;
+import com.diefesson.difcomp.token.DocPos;
 import com.diefesson.difcomp.token.Token;
 
 public class DifLangLexer extends Lexer {
@@ -32,37 +33,37 @@ public class DifLangLexer extends Lexer {
         on(Patterns.CONST_STRING, this::handleString);
     }
 
-    private Token handleIdentifier(String match, Scanner scanner) {
+    private Token handleIdentifier(DocPos position, String match, Scanner scanner) {
         switch (match) {
             case Patterns.KW_INT:
-                return new Token(TokenType.KW_INT.id, match);
+                return new Token(position, TokenType.KW_INT.id, match);
             case Patterns.KW_PRINT:
-                return new Token(TokenType.KW_PRINT.id, match);
+                return new Token(position, TokenType.KW_PRINT.id, match);
             default:
-                return new IdentifierToken(match);
+                return new IdentifierToken(position, match);
         }
     }
 
-    private Token handleInt(String match, Scanner scanner) throws LexerException {
+    private Token handleInt(DocPos position, String match, Scanner scanner) throws LexerException {
         try {
             int value = Integer.parseInt(match);
-            return new IntToken(value);
+            return new IntToken(position, value);
         } catch (NumberFormatException e) {
             throw new LexerException("error parsing int", e);
         }
     }
 
-    private Token handleString(String match, Scanner scanner) throws LexerException {
+    private Token handleString(DocPos position, String match, Scanner scanner) throws LexerException {
         try {
             String processed = processString(match);
-            return new StringToken(match, processed);
+            return new StringToken(position, match, processed);
         } catch (NoSuchElementException e) {
             throw new LexerException("string lexing exception at line %d ".formatted(lineCount), e);
         }
     }
 
     private String processString(String original) {
-        return original.substring(1, original.length() - 1);
+        return original.substring(1, original.length() - 1).replaceAll("\\\"", "\"");
     }
 
 }

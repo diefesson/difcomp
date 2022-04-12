@@ -12,8 +12,7 @@ public enum TokenType {
     IDENTIFIER(8),
     CONST_STR(9),
     CONST_INT(10),
-    PUNC_END(11),
-    END(12);
+    PUNC_END(11);
 
     public final int id;
 
