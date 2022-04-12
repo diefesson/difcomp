@@ -22,7 +22,7 @@ class LexerStatistics {
                 .replaceAll("\n", " ");
         StringBuilder message = new StringBuilder();
         message
-                .append("unexpected char at %d:%d\n".formatted(currentRow + 1, currentColumn + 1))
+                .append("unexpected char sequence at %d:%d\n".formatted(currentRow + 1, currentColumn + 1))
                 .append(currentLine)
                 .append(unexpected)
                 .append("\n");
