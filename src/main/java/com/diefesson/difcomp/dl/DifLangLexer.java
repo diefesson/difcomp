@@ -20,7 +20,7 @@ public class DifLangLexer extends Lexer {
     private int lineCount = 0;
 
     public DifLangLexer(Reader reader) {
-        super(reader, 32);
+        super(reader, 0);
         on(Patterns.WHITESPACE, new IgnoreHandler());
         on(Patterns.OP_ASSING, new SimpleHandler(TokenType.OP_ASSING.id));
         on(Patterns.OP_ADD, new SimpleHandler(TokenType.OP_ADD.id));
