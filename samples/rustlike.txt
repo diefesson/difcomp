@@ -1,0 +1,19 @@
+fun calculate(i32 a, i32 b, i32 c): i32 {
+    return a * b + c;
+}
+
+fun main(): unit {
+    i32 a = read_i32();
+    i32 b = read_i32();
+    i32 c = read_i32();
+    i32 value = calculate(a, b, c);
+    if value > 0 {
+        print("bigger than 0");
+    }
+    elif value == 0 {
+        print("equals than 0");
+    }
+    else {
+        print("less than 0");
+    }
+}

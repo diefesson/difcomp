@@ -5,8 +5,10 @@
 <float_type> ::=    "f32"
 <boolean_type> ::=  "bool"
 <char_type> ::=     "char"
-<unit_type> ::=     "Unit" (* Kotlin type over Rust () type *)
-<type> ::=          <signed_type> | <float_type> | <bool_type> | <char_type> | <unit_type>
+<string_type> ::=   "string"
+<unit_type> ::=     "unit" (* Kotlin type over Rust () type *)
+<type> ::=          <signed_type> | <float_type> | <bool_type> |
+                    <char_type> | <string_type> | <unit_type>
 
 <ari_op> ::=    "+" | "-" | "*" | "/"
 <rel_op> ::=    "==" | "<=" | ">=" | "<" | ">"
@@ -22,30 +24,37 @@
 <const_float> ::=   number* "." number+
 <const_int> ::=     number+
 <const_bool> ::=    "true" | "false"
+<const_char> ::=    "'" <alphanum> "'"
+<cosnt_string> ::=  "\"" <alphanum>* "\""
 
-<const_expr> ::=        <const_float> | <const_int> | <const_bool>
-<conversion_expr> ::=   <expression> as <type>
-<not_expr> ::=          <not_op> <expression>
-<bin_expr> ::=          <expression> <bin_op> <expression>
-<expression> ::=        <const_expr> | <not_expr> | <bin_expr>
+<arguments> ::= (<identifier> ("," <identifier>)*)?
+
+<const_expr> ::=    <const_float> | <const_int> | <const_bool> | <const_char> | cosnt_string
+<conv_expr> ::=     <expression> as <type>
+<not_expr> ::=      <not_op> <expression>
+<bin_expr> ::=      <expression> <bin_op> <expression>
+<call_expr> ::=     <identifier> "(" <arguments> ")"
+<expression> ::=    <const_expr> | <not_expr> | <bin_expr> | <call_expr> | "(" <expression> ")"
 
 (* C variable declaration *)
 <normal_statement> ::= (<type>? <identifier> "=")? <expression> ";"
 
-(* Rust and Python based conditionals *)
+(* Rust and Python/BASH based conditionals *)
 <if_statement> ::=          "if" <expression> <block>
 <elif_statement> ::=        "elif" <expression> <block>
 <else_statement> ::=        "else" <block>
 <conditional_statement> ::= <if_statement> <elif_statement>* <else_statement>?
+
+<return_statement> ::= "return" <expression> ";"
 
 <statement> ::= (<normal_statement> | conditional_statement)
 <block> ::=     "{" <statement>* "}"
 
 (* Kotlin function declaration with C parameters *)
 <param> ::=         <type> <identifier>
-<params> ::=        <param> | <param> "," <params> | ""
+<params> ::=        (param ("," <param>)*)?
 <function> ::=      "fun" <identifier> "(" <params> ")" ":" <type> <block>
 
-(* C/Java comments *)
+(* Java comments *)
 <block_comment> ::= "/*" ignored characters "*/"
 <line_comment> ::=  "//" ignored characters "\\n"
