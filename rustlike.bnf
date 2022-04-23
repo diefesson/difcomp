@@ -1,9 +1,12 @@
+<program> ::= <function>*
+
 (* Rust types *)
 <signed_type> ::=   "s32"
 <float_type> ::=    "f32"
 <boolean_type> ::=  "bool"
 <char_type> ::=     "char"
-<type> ::=          <signed_type> | <float_type> | <bool_type>
+<unit_type> ::=     "Unit" (* Kotlin type over Rust () type *)
+<type> ::=          <signed_type> | <float_type> | <bool_type> | <char_type> | <unit_type>
 
 <ari_op> ::=    "+" | "-" | "*" | "/"
 <rel_op> ::=    "==" | "<=" | ">=" | "<" | ">"
