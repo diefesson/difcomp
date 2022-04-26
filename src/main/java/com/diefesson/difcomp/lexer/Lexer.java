@@ -38,7 +38,7 @@ public class Lexer implements AutoCloseable {
     }
 
     public void on(String pattern, LexerHandler handler) {
-        patterns.add(Pattern.compile(pattern));
+        patterns.add(Pattern.compile("\\G(" + pattern + ")"));
         handlers.add(handler);
     }
 

@@ -11,17 +11,17 @@ public final class Patterns {
     public static final String TYPE_STRING = annla("string");
 
     // Arithmetic operators
-    public static final String OP_ADD = simple("\\+");
-    public static final String OP_SUB = simple("-");
-    public static final String OP_MUL = simple("\\*");
-    public static final String OP_DIV = simple("/");
+    public static final String OP_ADD = "\\+";
+    public static final String OP_SUB = "-";
+    public static final String OP_MUL = "\\*";
+    public static final String OP_DIV = "/";
 
     // Relational operators
-    public static final String OP_EQ = simple("==");
-    public static final String OP_LE = simple("<=");
-    public static final String OP_GE = simple(">=");
-    public static final String OP_LT = simple("<");
-    public static final String OP_GT = simple(">");
+    public static final String OP_EQ = "==";
+    public static final String OP_LE = "<=";
+    public static final String OP_GE = ">=";
+    public static final String OP_LT = "<";
+    public static final String OP_GT = ">";
 
     // Logical operators
     public static final String OP_NOT = annla("not");
@@ -35,14 +35,14 @@ public final class Patterns {
     public static final String CONST_STRING = annla("\"[\\w ]*\"");
 
     // Punctuations
-    public static final String PUNC_COMMA = simple(",");
-    public static final String PUNC_ARG_OPEN = simple("\\(");
-    public static final String PUNC_ARG_CLOSE = simple("\\)");
-    public static final String PUNC_BLOCK_OPEN = simple("\\{");
-    public static final String PUNC_BLOCK_CLOSE = simple("\\}");
-    public static final String PUNC_DEFINITION = simple("=");
-    public static final String PUNC_STMNT_END = simple(";");
-    public static final String PUNC_TWO_DOTS = simple(":");
+    public static final String PUNC_COMMA = ",";
+    public static final String PUNC_ARG_OPEN = "\\(";
+    public static final String PUNC_ARG_CLOSE = "\\)";
+    public static final String PUNC_BLOCK_OPEN = "\\{";
+    public static final String PUNC_BLOCK_CLOSE = "\\}";
+    public static final String PUNC_DEFINITION = "=";
+    public static final String PUNC_STMNT_END = ";";
+    public static final String PUNC_TWO_DOTS = ":";
 
     // Keywords
     public static final String KW_IF = annla("if");
@@ -54,15 +54,11 @@ public final class Patterns {
     // Identifier
     public static final String IDENTIFIER = annla("[[A-z]_][\\w_]*");
 
-    public static final String COMMENT_LINE = simple("//");
-    public static final String COMMENT_BLOCK_OPEN = simple("/\\*");
-    public static final String COMMENT_BLOCK_CLOSE = simple("\\*/");
+    public static final String COMMENT_LINE = "//";
+    public static final String COMMENT_BLOCK_OPEN = "/\\*";
+    public static final String COMMENT_BLOCK_CLOSE = "\\*/";
 
     private Patterns() {
-    }
-
-    public static String simple(String pattern) {
-        return "\\G(" + pattern + ")";
     }
 
     // TODO find a better name
@@ -70,6 +66,6 @@ public final class Patterns {
      * Short for "alphanumeric negative look ahead"
      */
     public static String annla(String pattern) {
-        return "\\G(" + pattern + ")(?![\\p{L}\\d])";
+        return "(" + pattern + ")(?![\\w])";
     }
 }

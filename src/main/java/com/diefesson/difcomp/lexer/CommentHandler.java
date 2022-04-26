@@ -7,12 +7,12 @@ import com.diefesson.difcomp.error.LexerException;
 import com.diefesson.difcomp.token.DocPos;
 import com.diefesson.difcomp.token.Token;
 
-public class UntilHandler implements LexerHandler {
+public class CommentHandler implements LexerHandler {
 
     private final Pattern end;
 
-    public UntilHandler(String end) {
-        this.end = Pattern.compile(end);
+    public CommentHandler(String end) {
+        this.end = Pattern.compile("\\G(" + end + ")");
     }
 
     @Override
@@ -31,7 +31,7 @@ public class UntilHandler implements LexerHandler {
                 throw new LexerException("unclosed comment starting at %s".formatted(position));
             }
         }
-        return new Token(position, -1, comment.toString());
+        return new Token(position, -1, comment.toString(), true);
     }
 
 }

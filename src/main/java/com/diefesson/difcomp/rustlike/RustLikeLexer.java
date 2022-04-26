@@ -2,7 +2,7 @@ package com.diefesson.difcomp.rustlike;
 
 import java.io.Reader;
 
-import com.diefesson.difcomp.lexer.UntilHandler;
+import com.diefesson.difcomp.lexer.CommentHandler;
 import com.diefesson.difcomp.lexer.CommonPatterns;
 import com.diefesson.difcomp.lexer.IgnoreHandler;
 import com.diefesson.difcomp.lexer.Lexer;
@@ -19,8 +19,8 @@ public class RustLikeLexer extends Lexer {
 
         on(CommonPatterns.WHITESPACE, new IgnoreHandler());
         on(CommonPatterns.NEW_LINE, new IgnoreHandler());
-        on(Patterns.COMMENT_LINE, new UntilHandler(CommonPatterns.NEW_LINE));
-        on(Patterns.COMMENT_BLOCK_OPEN, new UntilHandler(Patterns.COMMENT_BLOCK_CLOSE));
+        on(Patterns.COMMENT_LINE, new CommentHandler(CommonPatterns.NEW_LINE));
+        on(Patterns.COMMENT_BLOCK_OPEN, new CommentHandler(Patterns.COMMENT_BLOCK_CLOSE));
 
         on(Patterns.OP_ADD, new SimpleHandler(TokenType.OP_ADD.id));
         on(Patterns.OP_SUB, new SimpleHandler(TokenType.OP_SUB.id));
