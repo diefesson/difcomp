@@ -10,7 +10,7 @@ public class IgnoreHandler implements LexerHandler {
 
     @Override
     public Token handle(DocPos position, String match, Scanner scanner) throws LexerException {
-        return null;
+        return new Token(position, -1, match, true);
     }
 
 }

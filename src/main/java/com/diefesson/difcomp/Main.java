@@ -19,7 +19,7 @@ public class Main {
             Token token;
             do {
                 token = lexer.next();
-                System.out.println("Token: %s %s".formatted(TokenType.fromId(token.typeId), token));
+                System.out.println("%s %s".formatted(TokenType.fromId(token.typeId), token));
             } while (token.typeId != 0);
         } catch (LexerException e) {
             System.out.println(e.getMessage());

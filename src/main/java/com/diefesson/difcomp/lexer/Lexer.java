@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import com.diefesson.difcomp.error.LexerException;
+import com.diefesson.difcomp.error.UnknownCharSequenceException;
 import com.diefesson.difcomp.token.DocPos;
 import com.diefesson.difcomp.token.Token;
 
@@ -14,13 +15,23 @@ public class Lexer implements AutoCloseable {
 
     private final Scanner scanner;
     private final int horizon;
+    private final boolean ignore;
     private final List<Pattern> patterns;
     private final List<LexerHandler> handlers;
     private final LexerStatistics statistics;
 
+    public Lexer(Reader reader) {
+        this(reader, 0);
+    }
+
     public Lexer(Reader reader, int horizon) {
+        this(reader, horizon, true);
+    }
+
+    public Lexer(Reader reader, int horizon, boolean ignore) {
         this.scanner = new Scanner(reader);
         this.horizon = horizon;
+        this.ignore = ignore;
         this.patterns = new ArrayList<>();
         this.handlers = new ArrayList<>();
         this.statistics = new LexerStatistics();
@@ -32,10 +43,10 @@ public class Lexer implements AutoCloseable {
     }
 
     public Token next() throws LexerException {
-        Token token = null;
-        while (token == null) {
+        Token token;
+        do {
             token = tryNext();
-        }
+        } while (ignore && token.ignore);
         return token;
     }
 
@@ -46,15 +57,15 @@ public class Lexer implements AutoCloseable {
             LexerHandler h = handlers.get(i);
             String match = scanner.findWithinHorizon(p, horizon);
             if (match != null) {
-                statistics.updateStatistics(match);
-                return h.handle(position, match, scanner);
+                Token token = h.handle(position, match, scanner);
+                statistics.update(token.lexeme);
+                return token;
             }
         }
         if (scanner.findWithinHorizon("\\G\\z", 1) != null) {
             return new Token(position, 0, "");
         }
-        String unexpected = scanner.findWithinHorizon("\\G(.|\n){0,10}", horizon);
-        throw statistics.createUnexpectedExcepetion(unexpected);
+        throw new UnknownCharSequenceException(position);
     }
 
     @Override

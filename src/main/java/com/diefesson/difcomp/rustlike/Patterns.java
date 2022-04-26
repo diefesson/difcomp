@@ -55,7 +55,10 @@ public final class Patterns {
     public static final String IDENTIFIER = annla("[[A-z]_][\\w_]*");
 
     public static final String WHITESPACE = simple(" ");
-    public static final String NEW_LINE = simple("[\\n\\r]");
+    public static final String NEW_LINE = simple("(\\r\\n)|\\n");
+    public static final String COMMENT_LINE = simple("\\\\");
+    public static final String COMMENT_BLOCK_OPEN = simple("\\\\\\*");
+    public static final String COMMENT_BLOCK_CLOSE = simple("\\*\\\\");
 
     private Patterns() {
     }
