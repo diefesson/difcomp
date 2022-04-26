@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         try (
                 Reader reader = new FileReader(samplePath);
-                RustLikeLexer lexer = new RustLikeLexer(reader);) {
+                RustLikeLexer lexer = new RustLikeLexer(reader, false);) {
             Token token;
             do {
                 token = lexer.next();
