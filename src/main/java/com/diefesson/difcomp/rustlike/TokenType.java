@@ -51,6 +51,9 @@ public enum TokenType {
     KW_ELSE(0X0402),
     KW_FUN(0x0403),
     KW_RETURN(0x0404),
+
+    // Identifier
+    IDENTIFIER(0x0500),
     ;
 
     public final int id;

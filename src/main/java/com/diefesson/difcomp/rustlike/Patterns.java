@@ -11,9 +11,9 @@ public final class Patterns {
     public static final String TYPE_STRING = annla("string");
 
     // Arithmetic operators
-    public static final String OP_ADD = simple("+");
+    public static final String OP_ADD = simple("\\+");
     public static final String OP_SUB = simple("-");
-    public static final String OP_MUL = simple("*");
+    public static final String OP_MUL = simple("\\*");
     public static final String OP_DIV = simple("/");
 
     // Relational operators
@@ -31,7 +31,8 @@ public final class Patterns {
     public static final String CONST_F32 = annla("(\\d+.\\d*)|(.\\d+)");
     public static final String CONST_I32 = annla("\\d+");
     public static final String CONST_BOOL = annla("true|false");
-    public static final String CONST_CHAR = annla("'\\p{L}'");
+    public static final String CONST_CHAR = annla("'[\\w ]'");
+    public static final String CONST_STRING = annla("\"[\\w ]*\"");
 
     // Punctuations
     public static final String PUNC_COMMA = simple(",");
@@ -50,6 +51,12 @@ public final class Patterns {
     public static final String KW_FUN = annla("fun");
     public static final String KW_RETURN = annla("return");
 
+    // Identifier
+    public static final String IDENTIFIER = annla("[[A-z]_][\\w_]*");
+
+    public static final String WHITESPACE = simple(" ");
+    public static final String NEW_LINE = simple("[\\n\\r]");
+
     private Patterns() {
     }
 
@@ -62,6 +69,6 @@ public final class Patterns {
      * Short for "alphanumeric negative look ahead"
      */
     public static String annla(String pattern) {
-        return "\\G(" + pattern + ")(?!\\[p{L}\\d])";
+        return "\\G(" + pattern + ")(?![\\p{L}\\d])";
     }
 }
