@@ -29,7 +29,7 @@ public enum TokenType {
     OP_OR(0x010a),
 
     // Constants
-    CONST_I32(0x0200),
+    CONST_S32(0x0200),
     CONST_F32(0x0201),
     CONST_BOOL(0x0202),
     CONST_CHAR(0x0203),

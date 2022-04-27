@@ -1,5 +1,5 @@
-//this is a line comment
-fun calculate(i32 a, i32 b, i32 c): i32 {
+// this is a line comment
+fun calculate(s32 a, s32 b, s32 c): s32 {
     return a * b + c;
 }
 
@@ -11,10 +11,10 @@ fun calculate(i32 a, i32 b, i32 c): i32 {
     comment
 */
 fun main(): unit {
-    i32 a = read_i32();
-    i32 b = read_i32();
-    i32 c = read_i32();
-    i32 value = calculate(a, b, c);
+    s32 a = read_s32();
+    s32 b = read_s32();
+    s32 c = read_s32();
+    s32 value = calculate(a, b, c);
     if value > 0 {
         print("bigger than 0");
     }

@@ -19,10 +19,10 @@
 <alpha> ::=         [A-Z] | [a-z]
 <number> ::=        [0-9]
 <alphanum> ::=      <alpha> | <number>
-<identifier> ::=    <alpha> <alphanum>*
+<identifier> ::=    (<alpha> | "_") (<alphanum> | "_")*
 
-<const_float> ::=   number* "." number+
-<const_int> ::=     number+
+<const_float> ::=   (<number>* "." <number>+) | (<number>+ "." <number>*)
+<const_int> ::=     <number>+
 <const_bool> ::=    "true" | "false"
 <const_char> ::=    "'" <alphanum> "'"
 <cosnt_string> ::=  "\"" <alphanum>* "\""

@@ -28,11 +28,11 @@ public final class Patterns {
     public static final String OP_AND = annla("and");
     public static final String OP_OR = annla("or");
 
-    public static final String CONST_F32 = annla("(\\d+.\\d*)|(.\\d+)");
-    public static final String CONST_I32 = annla("\\d+");
+    public static final String CONST_F32 = annla("(\\d+\\.\\d*)|(\\d*\\.\\d+)");
+    public static final String CONST_S32 = annla("\\d+");
     public static final String CONST_BOOL = annla("true|false");
-    public static final String CONST_CHAR = annla("'[\\w ]'");
-    public static final String CONST_STRING = annla("\"[\\w ]*\"");
+    public static final String CONST_CHAR = "'[\\w ]'";
+    public static final String CONST_STRING = "\"[\\w ]*\"";
 
     // Punctuations
     public static final String PUNC_COMMA = ",";
