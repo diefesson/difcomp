@@ -15,7 +15,7 @@ public class Lexer implements AutoCloseable {
 
     private final Scanner scanner;
     private final int horizon;
-    private final boolean ignore;
+    private final boolean debug;
     private final List<Pattern> patterns;
     private final List<LexerHandler> handlers;
     private final LexerStatistics statistics;
@@ -25,13 +25,13 @@ public class Lexer implements AutoCloseable {
     }
 
     public Lexer(Reader reader, int horizon) {
-        this(reader, horizon, true);
+        this(reader, horizon, false);
     }
 
-    public Lexer(Reader reader, int horizon, boolean ignore) {
+    public Lexer(Reader reader, int horizon, boolean debug) {
         this.scanner = new Scanner(reader);
         this.horizon = horizon;
-        this.ignore = ignore;
+        this.debug = debug;
         this.patterns = new ArrayList<>();
         this.handlers = new ArrayList<>();
         this.statistics = new LexerStatistics();
@@ -46,7 +46,7 @@ public class Lexer implements AutoCloseable {
         Token token;
         do {
             token = tryNext();
-        } while (ignore && token.ignore);
+        } while (!debug && token.ignore);
         return token;
     }
 
@@ -69,7 +69,7 @@ public class Lexer implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         scanner.close();
     }
 

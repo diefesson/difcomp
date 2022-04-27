@@ -11,11 +11,11 @@ import com.diefesson.difcomp.lexer.SimpleHandler;
 public class RustLikeLexer extends Lexer {
 
     public RustLikeLexer(Reader reader) {
-        this(reader, true);
+        this(reader, false);
     }
 
-    public RustLikeLexer(Reader reader, boolean ignore) {
-        super(reader, 0, ignore);
+    public RustLikeLexer(Reader reader, boolean debug) {
+        super(reader, 0, debug);
 
         on(CommonPatterns.WHITESPACE, new IgnoreHandler());
         on(CommonPatterns.NEW_LINE, new IgnoreHandler());
