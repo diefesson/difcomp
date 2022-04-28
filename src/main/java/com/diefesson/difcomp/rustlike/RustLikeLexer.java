@@ -37,8 +37,8 @@ public class RustLikeLexer extends Lexer {
         on(Patterns.OP_AND, new SimpleHandler(TokenType.OP_AND.id));
         on(Patterns.OP_OR, new SimpleHandler(TokenType.OP_OR.id));
 
-        on(Patterns.CONST_S32, new SimpleHandler(TokenType.CONST_S32.id));
         on(Patterns.CONST_F32, new SimpleHandler(TokenType.CONST_F32.id));
+        on(Patterns.CONST_S32, new SimpleHandler(TokenType.CONST_S32.id));
         on(Patterns.CONST_BOOL, new SimpleHandler(TokenType.CONST_BOOL.id));
         on(Patterns.CONST_CHAR, new SimpleHandler(TokenType.CONST_CHAR.id));
         on(Patterns.CONST_STRING, new SimpleHandler(TokenType.CONST_STRING.id));

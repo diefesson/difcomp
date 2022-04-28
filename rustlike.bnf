@@ -12,6 +12,7 @@
 
 <ari_op> ::=    "+" | "-" | "*" | "/"
 <rel_op> ::=    "==" | "<=" | ">=" | "<" | ">"
+(* Python logical operators *)
 <log_op> ::=    "and" | "or"
 <not_op> ::=    "not"
 <bin_op> ::=    <ari_op> | <rel_op> | <log_op>
