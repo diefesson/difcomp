@@ -13,22 +13,7 @@ import com.diefesson.difcomp.token.Token;
 
 public class Main {
 
-    public final static boolean QUICK_TEST = false;
     public final static String SAMPLE_PATH = "samples/rustlike.txt";
-
-    public static void quickTest() {
-        try (
-                Reader reader = new FileReader(SAMPLE_PATH);
-                RustLikeLexer lexer = new RustLikeLexer(reader);) {
-            Token token;
-            do {
-                token = lexer.next();
-                System.out.println("%s %s".formatted(TokenType.fromId(token.typeId), token));
-            } while (token.typeId != 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void runLexer(boolean debug, String path) {
         try (
@@ -53,8 +38,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        if (QUICK_TEST) {
-            quickTest();
+        if (QuickTest.ENABLE_QUICK_TEST) {
+            QuickTest.quickTest(args);
             return;
         }
         if (args.length != 2) {
