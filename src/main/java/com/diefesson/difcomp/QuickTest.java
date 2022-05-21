@@ -10,6 +10,7 @@ public class QuickTest {
     public static void quickTest(String[] args) {
         RuleSet rs = RuleSet.builder()
                 .rule("S", "X", "S")
+                .emptyRule("S")
                 .rule("X", 0)
                 .rule("X", 1)
                 .build();

@@ -20,7 +20,7 @@ public class Term extends GrammarItem {
 
     @Override
     public String toString() {
-        return "Term(%d)".formatted(tokenId);
+        return "%s(%d)".formatted(Term.class.getSimpleName(), tokenId);
     }
 
 }

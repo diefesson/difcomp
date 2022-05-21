@@ -20,7 +20,7 @@ public class Var extends GrammarItem {
 
     @Override
     public String toString() {
-        return "Var(%s)".formatted(name);
+        return "%s(%s)".formatted(Var.class.getSimpleName(), name);
     }
 
 }
