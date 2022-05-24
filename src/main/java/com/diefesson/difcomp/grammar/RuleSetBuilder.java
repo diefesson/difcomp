@@ -2,7 +2,6 @@ package com.diefesson.difcomp.grammar;
 
 import java.util.ArrayList;
 import java.util.List;
-import static com.diefesson.difcomp.grammar.Empty.EMPTY;
 
 public class RuleSetBuilder {
 
@@ -13,12 +12,13 @@ public class RuleSetBuilder {
     }
 
     public RuleSet build() {
+        checkRightRefs();
         return new RuleSet(rules);
     }
 
     public RuleSetBuilder emptyRule(String left) {
         checkLeft(left);
-        rules.add(new Rule(new Var(left), List.of(EMPTY)));
+        rules.add(new Rule(new Var(left), List.of(Empty.EMPTY)));
         return this;
     }
 
@@ -53,6 +53,21 @@ public class RuleSetBuilder {
             }
             if (!(r instanceof String || r instanceof Integer)) {
                 throw new IllegalArgumentException("right should contain only variable names and terminal token ids");
+            }
+        }
+    }
+
+    private void checkRightRefs() {
+        for (int ri = 0; ri < rules.size(); ri++) {
+            Rule rule = rules.get(ri);
+            for (int pi = 0; pi < rule.right().size(); pi++) {
+                GrammarItem production = rule.right().get(pi);
+                if (production instanceof Var &&
+                        rules.stream().noneMatch((ru) -> ru.left.equals(production))) {
+                    String message = "rule %d, grammar item %d for %s refers to unknown %s".formatted(
+                            ri, pi, rule.left, production);
+                    throw new IllegalStateException(message);
+                }
             }
         }
     }
