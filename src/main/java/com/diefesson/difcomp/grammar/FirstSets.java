@@ -11,9 +11,9 @@ public class FirstSets {
     private FirstSets() {
     }
 
-    public static Map<Var, Set<GrammarItem>> calculateFirstSets(RuleSet ruleSet) {
+    public static Map<Element, Set<Element>> calculateFirstSets(RuleSet ruleSet) {
         List<Rule> rules = ruleSet.rules();
-        Map<Var, Set<GrammarItem>> firstSets = new HashMap<>();
+        Map<Element, Set<Element>> firstSets = new HashMap<>();
         rules.stream()
                 .map((r) -> r.left)
                 .distinct()
@@ -28,16 +28,16 @@ public class FirstSets {
         return firstSets;
     }
 
-    private static boolean compute(Map<Var, Set<GrammarItem>> firstSets, Rule rule) {
+    private static boolean compute(Map<Element, Set<Element>> firstSets, Rule rule) {
         boolean updated = false;
-        Var left = rule.left;
-        List<GrammarItem> right = rule.right();
-        Set<GrammarItem> firstSet = firstSets.get(left);
+        Element left = rule.left;
+        List<Element> right = rule.right();
+        Set<Element> firstSet = firstSets.get(left);
         for (int i = 0; i < right.size(); i++) {
-            GrammarItem item = right.get(i);
-            if (item instanceof Var) {
-                Set<GrammarItem> firsts = new HashSet<>(firstSets.get(item));
-                Boolean containsEmpty = firsts.remove(Empty.EMPTY);
+            Element item = right.get(i);
+            if (item.type == ElementType.VARIABLE) {
+                Set<Element> firsts = new HashSet<>(firstSets.get(item));
+                Boolean containsEmpty = firsts.remove(Element.empty());
                 updated |= firstSet.addAll(firsts);
                 if (!containsEmpty) {
                     break;
@@ -47,7 +47,7 @@ public class FirstSets {
                 break;
             }
             if (i == right.size() - 1) {
-                updated |= firstSet.add(Empty.EMPTY);
+                updated |= firstSet.add(Element.empty());
             }
         }
         return updated;

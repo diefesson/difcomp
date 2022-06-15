@@ -2,6 +2,7 @@ package com.diefesson.difcomp.grammar;
 
 import java.util.ArrayList;
 import java.util.List;
+import static com.diefesson.difcomp.grammar.Element.*;
 
 public class RuleSetBuilder {
 
@@ -18,22 +19,22 @@ public class RuleSetBuilder {
 
     public RuleSetBuilder emptyRule(String left) {
         checkLeft(left);
-        rules.add(new Rule(new Var(left), List.of(Empty.EMPTY)));
+        rules.add(new Rule(variable(left), List.of(empty())));
         return this;
     }
 
     public RuleSetBuilder rule(String left, Object... right) {
         checkLeft(left);
         checkRight(right);
-        List<GrammarItem> ruleRight = new ArrayList<>();
+        List<Element> ruleRight = new ArrayList<>();
         for (Object r : right) {
             if (r instanceof String) {
-                ruleRight.add(new Var((String) r));
+                ruleRight.add(variable((String) r));
             } else if (r instanceof Integer) {
-                ruleRight.add(new Term((Integer) r));
+                ruleRight.add(terminal((Integer) r));
             }
         }
-        rules.add(new Rule(new Var(left), ruleRight));
+        rules.add(new Rule(variable(left), ruleRight));
         return this;
     }
 
@@ -61,8 +62,8 @@ public class RuleSetBuilder {
         for (int ri = 0; ri < rules.size(); ri++) {
             Rule rule = rules.get(ri);
             for (int pi = 0; pi < rule.right().size(); pi++) {
-                GrammarItem production = rule.right().get(pi);
-                if (production instanceof Var &&
+                Element production = rule.right().get(pi);
+                if (production.type == ElementType.VARIABLE &&
                         rules.stream().noneMatch((ru) -> ru.left.equals(production))) {
                     String message = "rule %d, grammar item %d for %s refers to unknown %s".formatted(
                             ri, pi, rule.left, production);

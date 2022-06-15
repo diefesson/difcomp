@@ -5,10 +5,9 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import com.diefesson.difcomp.grammar.FirstSets;
-import com.diefesson.difcomp.grammar.GrammarItem;
+import com.diefesson.difcomp.grammar.Element;
 import com.diefesson.difcomp.grammar.Rule;
 import com.diefesson.difcomp.grammar.RuleSet;
-import com.diefesson.difcomp.grammar.Var;
 
 public class QuickTest {
 
@@ -29,10 +28,10 @@ public class QuickTest {
         for (Rule r : rs.rules()) {
             System.out.println(r);
         }
-        Map<Var, Set<GrammarItem>> fs = FirstSets.calculateFirstSets(rs);
-        for (Entry<Var, Set<GrammarItem>> e : fs.entrySet()) {
+        Map<Element, Set<Element>> fs = FirstSets.calculateFirstSets(rs);
+        for (Entry<Element, Set<Element>> e : fs.entrySet()) {
             System.out.println(e.getKey());
-            for (GrammarItem item : e.getValue()) {
+            for (Element item : e.getValue()) {
                 System.out.println("   " + item);
             }
         }

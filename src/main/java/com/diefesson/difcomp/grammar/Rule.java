@@ -5,27 +5,27 @@ import java.util.List;
 
 public class Rule {
 
-    public final Var left;
-    private final List<GrammarItem> right;
+    public final Element left;
+    private final List<Element> right;
 
-    public Rule(Var left, List<GrammarItem> right) {
+    public Rule(Element left, List<Element> right) {
         this.left = left;
         this.right = right;
     }
 
-    public List<GrammarItem> right() {
+    public List<Element> right() {
         return Collections.unmodifiableList(right);
     }
 
     public boolean isEmpty() {
-        return right.get(0).equals(Empty.EMPTY);
+        return right.get(0).type == ElementType.EMPTY;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(left.name).append(" ->");
-        for (GrammarItem r : right) {
+        sb.append(left.variable).append(" ->");
+        for (Element r : right) {
             sb.append(" ").append(r);
         }
         return sb.toString();
