@@ -1,7 +1,11 @@
 package com.diefesson.difcomp.grammar;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static com.diefesson.difcomp.grammar.Element.*;
 
 public class RuleSetBuilder {
@@ -13,7 +17,7 @@ public class RuleSetBuilder {
     }
 
     public RuleSet build() {
-        checkRightRefs();
+        checkRefs();
         return new RuleSet(rules);
     }
 
@@ -58,18 +62,36 @@ public class RuleSetBuilder {
         }
     }
 
-    private void checkRightRefs() {
-        for (int ri = 0; ri < rules.size(); ri++) {
-            Rule rule = rules.get(ri);
-            for (int pi = 0; pi < rule.right().size(); pi++) {
-                Element production = rule.right().get(pi);
-                if (production.type == ElementType.VARIABLE &&
-                        rules.stream().noneMatch((ru) -> ru.left.equals(production))) {
-                    String message = "rule %d, grammar item %d for %s refers to unknown %s".formatted(
-                            ri, pi, rule.left, production);
-                    throw new IllegalStateException(message);
-                }
-            }
+    private void checkRefs() {
+        Set<Element> leftVars = rules
+                .stream()
+                .map((r) -> r.left)
+                .collect(Collectors.toSet());
+        Set<Element> rightVars = rules
+                .stream()
+                .map((r) -> r.right())
+                .flatMap((es) -> es.stream())
+                .filter((e) -> e.type == ElementType.VARIABLE)
+                .collect(Collectors.toSet());
+        Set<Element> missingOnRight = new HashSet<>(leftVars);
+        missingOnRight.removeAll(rightVars);
+        missingOnRight.remove(rules.get(0).left); // Don't consider the start rule
+        Set<Element> missingOnLeft = new HashSet<>(rightVars);
+        missingOnLeft.removeAll(leftVars);
+        if (!missingOnRight.isEmpty()) {
+            String vars = missingOnRight
+                    .stream()
+                    .map((v) -> v.variable)
+                    .collect(Collectors.joining(", "));
+            throw new IllegalStateException("Variable(s) %s are never generated".formatted(vars));
+        }
+        ;
+        if (!missingOnLeft.isEmpty()) {
+            String vars = missingOnLeft
+                    .stream()
+                    .map((v) -> v.variable)
+                    .collect(Collectors.joining(", "));
+            throw new IllegalStateException("Variable(s) %s are not defined".formatted(vars));
         }
     }
 
