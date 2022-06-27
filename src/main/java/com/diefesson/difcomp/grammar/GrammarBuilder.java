@@ -6,28 +6,30 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.diefesson.difcomp.error.GrammarException;
+
 import static com.diefesson.difcomp.grammar.Element.*;
 
-public class RuleSetBuilder {
+public class GrammarBuilder {
 
     private final List<Rule> rules;
 
-    public RuleSetBuilder() {
+    public GrammarBuilder() {
         rules = new ArrayList<>();
     }
 
-    public RuleSet build() {
+    public Grammar build() throws GrammarException {
         checkRefs();
-        return new RuleSet(rules);
+        return new Grammar(rules);
     }
 
-    public RuleSetBuilder emptyRule(String left) {
+    public GrammarBuilder emptyRule(String left) {
         checkLeft(left);
         rules.add(new Rule(variable(left), List.of(empty())));
         return this;
     }
 
-    public RuleSetBuilder rule(String left, Object... right) {
+    public GrammarBuilder rule(String left, Object... right) {
         checkLeft(left);
         checkRight(right);
         List<Element> ruleRight = new ArrayList<>();
@@ -62,7 +64,7 @@ public class RuleSetBuilder {
         }
     }
 
-    private void checkRefs() {
+    private void checkRefs() throws GrammarException {
         Set<Element> leftVars = rules
                 .stream()
                 .map((r) -> r.left)
@@ -83,7 +85,7 @@ public class RuleSetBuilder {
                     .stream()
                     .map((v) -> v.variable)
                     .collect(Collectors.joining(", "));
-            throw new IllegalStateException("Variable(s) %s are never generated".formatted(vars));
+            throw new GrammarException("Variable(s) %s are never generated".formatted(vars));
         }
         ;
         if (!missingOnLeft.isEmpty()) {
@@ -91,7 +93,7 @@ public class RuleSetBuilder {
                     .stream()
                     .map((v) -> v.variable)
                     .collect(Collectors.joining(", "));
-            throw new IllegalStateException("Variable(s) %s are not defined".formatted(vars));
+            throw new GrammarException("Variable(s) %s are not defined".formatted(vars));
         }
     }
 

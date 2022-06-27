@@ -11,8 +11,8 @@ public class FirstSets {
     private FirstSets() {
     }
 
-    public static Map<Element, Set<Element>> calculateFirstSets(RuleSet ruleSet) {
-        List<Rule> rules = ruleSet.rules();
+    public static Map<Element, Set<Element>> calculateFirstSets(Grammar grammar) {
+        List<Rule> rules = grammar.rules();
         Map<Element, Set<Element>> firstSets = new HashMap<>();
         rules.stream()
                 .map((r) -> r.left)

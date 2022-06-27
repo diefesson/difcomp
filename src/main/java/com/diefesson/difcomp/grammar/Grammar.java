@@ -3,11 +3,11 @@ package com.diefesson.difcomp.grammar;
 import java.util.Collections;
 import java.util.List;
 
-public class RuleSet {
+public class Grammar {
 
     private final List<Rule> rules;
 
-    public RuleSet(List<Rule> rules) {
+    public Grammar(List<Rule> rules) {
         this.rules = rules;
     }
 
@@ -15,8 +15,8 @@ public class RuleSet {
         return Collections.unmodifiableList(rules);
     }
 
-    public static RuleSetBuilder builder() {
-        return new RuleSetBuilder();
+    public static GrammarBuilder builder() {
+        return new GrammarBuilder();
     }
 
 }
