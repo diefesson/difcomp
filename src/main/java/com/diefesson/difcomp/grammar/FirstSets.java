@@ -1,68 +1,60 @@
 package com.diefesson.difcomp.grammar;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class FirstSets {
+public class FirstSets extends ElementSet {
 
-    private final Map<Element, Set<Element>> firstSets;
-
-    private FirstSets(Map<Element, Set<Element>> firstSets) {
-        this.firstSets = firstSets;
+    public FirstSets(Map<Element, Set<Element>> firstSet) {
+        super(firstSet);
     }
 
-    public Set<Element> keys() {
-        return Collections.unmodifiableSet(firstSets.keySet());
-    }
-
+    @Override
     public Set<Element> get(Element key) {
-        return Collections.unmodifiableSet(firstSets.get(key));
+        if (key.type == ElementType.EMPTY || key.type == ElementType.TERMINAL) {
+            return Set.of(key);
+        }
+        return super.get(key);
+    }
+
+    public Set<Element> get(List<Element> elements) {
+        if (elements.isEmpty()) {
+            return Set.of(Element.empty());
+        }
+        Set<Element> firstSet = new HashSet<>();
+        for (Element e : elements) {
+            Set<Element> elementFirstSet = new HashSet<>(get(e));
+            boolean hadEmpty = elementFirstSet.contains(Element.empty());
+            elementFirstSet.remove(Element.empty());
+            firstSet.addAll(elementFirstSet);
+            if (!hadEmpty) {
+                break;
+            }
+        }
+        if (elements.stream().allMatch((e) -> get(e).contains(Element.empty()))) {
+            firstSet.add(Element.empty());
+        }
+        return firstSet;
     }
 
     public static FirstSets calculateFirstSets(Grammar grammar) {
-        List<Rule> rules = grammar.rules();
-        Map<Element, Set<Element>> firstSets = new HashMap<>();
-        rules.stream()
-                .map((r) -> r.left)
-                .distinct()
-                .forEach((v) -> firstSets.put(v, new HashSet<>()));
+        FirstSets firstSets = new FirstSets(new HashMap<>());
         boolean updated;
         do {
             updated = false;
-            for (Rule rule : rules) {
+            for (Rule rule : grammar.rules()) {
                 updated |= compute(firstSets, rule);
             }
         } while (updated);
-        return new FirstSets(firstSets);
+        return firstSets;
     }
 
-    private static boolean compute(Map<Element, Set<Element>> firstSets, Rule rule) {
-        boolean updated = false;
-        Element left = rule.left;
-        List<Element> right = rule.right();
-        Set<Element> firstSet = firstSets.get(left);
-        for (int i = 0; i < right.size(); i++) {
-            Element item = right.get(i);
-            if (item.type == ElementType.VARIABLE) {
-                Set<Element> firsts = new HashSet<>(firstSets.get(item));
-                Boolean containsEmpty = firsts.remove(Element.empty());
-                updated |= firstSet.addAll(firsts);
-                if (!containsEmpty) {
-                    break;
-                }
-            } else {
-                updated |= firstSet.add(item);
-                break;
-            }
-            if (i == right.size() - 1) {
-                updated |= firstSet.add(Element.empty());
-            }
-        }
-        return updated;
+    private static boolean compute(FirstSets firstSets, Rule rule) {
+        Set<Element> foundFirstSet = firstSets.get(rule.right());
+        return firstSets.add(rule.left, foundFirstSet);
     }
 
 }

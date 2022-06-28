@@ -1,6 +1,7 @@
 package com.diefesson.difcomp;
 
 import com.diefesson.difcomp.grammar.FirstSets;
+import com.diefesson.difcomp.grammar.FollowSets;
 import com.diefesson.difcomp.error.GrammarException;
 import com.diefesson.difcomp.grammar.Element;
 import com.diefesson.difcomp.grammar.Rule;
@@ -12,24 +13,22 @@ public class QuickTest {
 
     public static void quickTest(String[] args) {
         try {
-            Grammar rs = Grammar.builder()
-                    .rule("EXPR", 0)
-                    .rule("EXPR", "SUBEXPR", "BINOP", "SUBEXPR")
-                    .rule("SUBEXPR", 3)
-                    .emptyRule("SUBEXPR")
-                    .rule("BINOP", "PLUS")
-                    .rule("BINOP", "MINUS")
-                    .emptyRule("BINOP")
-                    .rule("PLUS", 1)
-                    .rule("MINUS", 2)
+            Grammar grammar = Grammar.builder()
+                    .rule("I", "S")
+                    .rule("S", "S", 1, "M")
+                    .rule("S", "M")
+                    .rule("M", "M", 2, "C")
+                    .rule("M", "C")
+                    .rule("C", 3)
                     .build();
-            for (Rule r : rs.rules()) {
+            for (Rule r : grammar.rules()) {
                 System.out.println(r);
             }
-            FirstSets fs = FirstSets.calculateFirstSets(rs);
-            for (Element e : fs.keys()) {
+            FirstSets firstSets = FirstSets.calculateFirstSets(grammar);
+            FollowSets followSets = FollowSets.calculateFollowSets(grammar, firstSets);
+            for (Element e : grammar.lefts()) {
                 System.out.println(e);
-                for (Element item : fs.get(e)) {
+                for (Element item : followSets.get(e)) {
                     System.out.println("   " + item);
                 }
             }
