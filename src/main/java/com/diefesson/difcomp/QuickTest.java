@@ -1,9 +1,5 @@
 package com.diefesson.difcomp;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-
 import com.diefesson.difcomp.grammar.FirstSets;
 import com.diefesson.difcomp.error.GrammarException;
 import com.diefesson.difcomp.grammar.Element;
@@ -30,10 +26,10 @@ public class QuickTest {
             for (Rule r : rs.rules()) {
                 System.out.println(r);
             }
-            Map<Element, Set<Element>> fs = FirstSets.calculateFirstSets(rs);
-            for (Entry<Element, Set<Element>> e : fs.entrySet()) {
-                System.out.println(e.getKey());
-                for (Element item : e.getValue()) {
+            FirstSets fs = FirstSets.calculateFirstSets(rs);
+            for (Element e : fs.keys()) {
+                System.out.println(e);
+                for (Element item : fs.get(e)) {
                     System.out.println("   " + item);
                 }
             }

@@ -1,5 +1,6 @@
 package com.diefesson.difcomp.grammar;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,10 +9,21 @@ import java.util.Set;
 
 public class FirstSets {
 
-    private FirstSets() {
+    private final Map<Element, Set<Element>> firstSets;
+
+    private FirstSets(Map<Element, Set<Element>> firstSets) {
+        this.firstSets = firstSets;
     }
 
-    public static Map<Element, Set<Element>> calculateFirstSets(Grammar grammar) {
+    public Set<Element> keys() {
+        return Collections.unmodifiableSet(firstSets.keySet());
+    }
+
+    public Set<Element> get(Element key) {
+        return Collections.unmodifiableSet(firstSets.get(key));
+    }
+
+    public static FirstSets calculateFirstSets(Grammar grammar) {
         List<Rule> rules = grammar.rules();
         Map<Element, Set<Element>> firstSets = new HashMap<>();
         rules.stream()
@@ -25,7 +37,7 @@ public class FirstSets {
                 updated |= compute(firstSets, rule);
             }
         } while (updated);
-        return firstSets;
+        return new FirstSets(firstSets);
     }
 
     private static boolean compute(Map<Element, Set<Element>> firstSets, Rule rule) {
