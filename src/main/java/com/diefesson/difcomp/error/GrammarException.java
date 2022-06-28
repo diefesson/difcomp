@@ -1,6 +1,7 @@
 package com.diefesson.difcomp.error;
 
 public class GrammarException extends CompileException {
+
     public GrammarException(String message) {
         super(message);
     }
