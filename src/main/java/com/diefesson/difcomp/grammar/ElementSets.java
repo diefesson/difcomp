@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ElementSet {
+public class ElementSets {
     private final Map<Element, Set<Element>> elementSets;
 
-    public ElementSet(Map<Element, Set<Element>> elementSets) {
+    public ElementSets(Map<Element, Set<Element>> elementSets) {
         this.elementSets = elementSets;
     }
 

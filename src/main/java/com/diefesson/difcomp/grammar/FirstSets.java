@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class FirstSets extends ElementSet {
+public class FirstSets extends ElementSets {
 
     public FirstSets(Map<Element, Set<Element>> firstSet) {
         super(firstSet);

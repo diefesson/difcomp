@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class FollowSets extends ElementSet {
+public class FollowSets extends ElementSets {
 
     public FollowSets(Map<Element, Set<Element>> followSets) {
         super(followSets);
