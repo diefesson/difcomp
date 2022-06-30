@@ -29,4 +29,14 @@ public class ElementSets {
         }
         return elementSets.get(key).addAll(elements);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Element key : keys()) {
+            Set<Element> set = get(key);
+            sb.append(key).append(" : ").append(set).append('\n');
+        }
+        return sb.toString();
+    }
 }
