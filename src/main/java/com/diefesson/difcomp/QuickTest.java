@@ -1,11 +1,9 @@
 package com.diefesson.difcomp;
 
-import com.diefesson.difcomp.grammar.FirstSets;
-import com.diefesson.difcomp.grammar.FollowSets;
 import com.diefesson.difcomp.error.GrammarException;
-import com.diefesson.difcomp.grammar.Element;
-import com.diefesson.difcomp.grammar.Rule;
 import com.diefesson.difcomp.grammar.Grammar;
+import com.diefesson.difcomp.grammar.Item;
+import com.diefesson.difcomp.grammar.Rule;
 
 public class QuickTest {
 
@@ -21,17 +19,16 @@ public class QuickTest {
                     .rule("M", "C")
                     .rule("C", 3)
                     .build();
-            for (Rule r : grammar.rules()) {
-                System.out.println(r);
+            Item item = Item.start(grammar);
+            System.out.println("Kernel: ");
+            for (Rule rule : item.kernel()) {
+                System.out.printf("\t%s%n", rule);
             }
-            FirstSets firstSets = FirstSets.calculateFirstSets(grammar);
-            FollowSets followSets = FollowSets.calculateFollowSets(grammar, firstSets);
-            for (Element e : grammar.lefts()) {
-                System.out.println(e);
-                for (Element item : followSets.get(e)) {
-                    System.out.println("   " + item);
-                }
+            System.out.println("Closure: ");
+            for (Rule rule : item.closure()) {
+                System.out.printf("\t%s%n", rule);
             }
+
         } catch (GrammarException e) {
             e.printStackTrace();
         }

@@ -35,6 +35,10 @@ public class Rule {
         return new Rule(left, newPrefix, newRight);
     }
 
+    public boolean isFinal() {
+        return right.isEmpty();
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

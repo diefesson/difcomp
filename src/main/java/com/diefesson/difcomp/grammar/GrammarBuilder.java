@@ -38,6 +38,8 @@ public class GrammarBuilder {
                 ruleRight.add(variable((String) r));
             } else if (r instanceof Integer) {
                 ruleRight.add(terminal((Integer) r));
+            } else {
+                throw new IllegalArgumentException("Invalid argument: " + r);
             }
         }
         rules.add(new Rule(variable(left), ruleRight));
