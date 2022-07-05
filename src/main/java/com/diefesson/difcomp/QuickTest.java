@@ -1,6 +1,7 @@
 package com.diefesson.difcomp;
 
 import com.diefesson.difcomp.error.GrammarException;
+import com.diefesson.difcomp.grammar.Element;
 import com.diefesson.difcomp.grammar.Grammar;
 import com.diefesson.difcomp.grammar.Item;
 import com.diefesson.difcomp.grammar.Rule;
@@ -20,6 +21,7 @@ public class QuickTest {
                     .rule("C", 3)
                     .build();
             Item item = Item.start(grammar);
+            item = item.next(grammar, Element.variable("M"));
             System.out.println("Kernel: ");
             for (Rule rule : item.kernel()) {
                 System.out.printf("\t%s%n", rule);

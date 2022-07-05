@@ -43,6 +43,10 @@ public class Rule {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(left.variable).append(" ->");
+        for (Element element : prefix) {
+            builder.append(" ").append(element);
+        }
+        builder.append(" .");
         for (Element element : right) {
             builder.append(" ").append(element);
         }
