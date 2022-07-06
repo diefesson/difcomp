@@ -27,6 +27,7 @@ public class Item {
 
     public Set<Element> directions() {
         return closure.stream()
+                .filter((rule) -> !rule.isFinal())
                 .map((rule) -> rule.right().get(0))
                 .collect(Collectors.toSet());
     }
@@ -38,9 +39,7 @@ public class Item {
     }
 
     public Set<Item> nexts(Grammar grammar) {
-        return closure.stream()
-                .filter((rule) -> !rule.isFinal())
-                .map((rule) -> rule.right().get(0))
+        return directions().stream()
                 .map((reading) -> next(grammar, reading))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
