@@ -24,4 +24,20 @@ public class Action {
     public static Action accept() {
         return new Action(ActionType.ACCEPT, -1);
     }
+
+    @Override
+    public String toString() {
+        switch (type) {
+            case SHIFT:
+                return "< Shift %d >".formatted(value);
+            case REDUCE:
+                return "< Reduce %d >".formatted(value);
+            case GO:
+                return "< Go %d >".formatted(value);
+            case ACCEPT:
+                return "< Accept >";
+            default:
+                throw new IllegalStateException();
+        }
+    }
 }

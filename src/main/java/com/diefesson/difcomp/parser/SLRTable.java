@@ -1,15 +1,22 @@
 package com.diefesson.difcomp.parser;
 
+import static com.diefesson.difcomp.grammar.Element.terminal;
+import static com.diefesson.difcomp.grammar.ElementType.VARIABLE;
+import static com.diefesson.difcomp.parser.Action.accept;
+import static com.diefesson.difcomp.parser.Action.go;
+import static com.diefesson.difcomp.parser.Action.reduce;
+import static com.diefesson.difcomp.parser.Action.shift;
+import static com.diefesson.difcomp.parser.SLRKey.key;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.diefesson.difcomp.error.ParserException;
 import com.diefesson.difcomp.grammar.Element;
-import com.diefesson.difcomp.grammar.ElementType;
 import com.diefesson.difcomp.grammar.FirstSets;
 import com.diefesson.difcomp.grammar.FollowSets;
 import com.diefesson.difcomp.grammar.Grammar;
@@ -18,51 +25,47 @@ import com.diefesson.difcomp.grammar.Rule;
 
 public class SLRTable {
 
-    // TODO: use a composity key?
-    private final Map<Integer, Map<Element, List<Action>>> table;
+    private final Map<SLRKey, List<Action>> table;
 
-    public SLRTable(Map<Integer, Map<Element, List<Action>>> table) {
-        this.table = table;
+    protected SLRTable() {
+        this.table = new LinkedHashMap<>();
     }
 
-    public List<Action> getList(int state, Element reading) {
-        Map<Element, List<Action>> elementAxis = table.get(state);
-        if (elementAxis != null) {
-            List<Action> actions = elementAxis.get(reading);
-            if (actions != null) {
-                return Collections.unmodifiableList(actions);
-            }
+    public Set<SLRKey> keys() {
+        return Collections.unmodifiableSet(table.keySet());
+    }
+
+    public List<Action> getList(SLRKey key) {
+        List<Action> actions = table.get(key);
+        if (actions != null) {
+            return Collections.unmodifiableList(actions);
+        } else {
+            return List.of();
         }
-        return List.of();
     }
 
-    public Action get(int state, Element reading) throws ParserException {
-        List<Action> actions = getList(state, reading);
+    public Action get(SLRKey key) throws ParserException {
+        List<Action> actions = getList(key);
         if (actions.size() == 0) {
-            throw new ParserException("no action for %d %s".formatted(state, reading));
+            throw new ParserException("no action for %s".formatted(key));
         }
         if (actions.size() > 1) {
-            throw new ParserException("ambiguous action for %d %s".formatted(state, reading));
+            throw new ParserException("ambiguous action for %s".formatted(key));
         }
         return actions.get(0);
     }
 
-    private void add(int state, Element reading, Action action) {
-        Map<Element, List<Action>> elementAxis = table.get(state);
-        if (elementAxis == null) {
-            elementAxis = new HashMap<>();
-            table.put(state, elementAxis);
-        }
-        List<Action> actions = elementAxis.get(reading);
+    protected void add(SLRKey key, Action action) {
+        List<Action> actions = table.get(key);
         if (actions == null) {
             actions = new ArrayList<>();
-            elementAxis.put(reading, actions);
+            table.put(key, actions);
         }
         actions.add(action);
     }
 
     public static SLRTable compute(Grammar grammar) {
-        SLRTable slrTable = new SLRTable(new HashMap<>());
+        SLRTable slrTable = new SLRTable();
         FirstSets firstSets = FirstSets.calculateFirstSets(grammar);
         FollowSets followSets = FollowSets.calculateFollowSets(grammar, firstSets);
         List<Item> items = Item.computeItems(grammar);
@@ -71,21 +74,21 @@ public class SLRTable {
             for (Element direction : item.directions()) {
                 Item next = item.next(grammar, direction);
                 int nextState = items.indexOf(next);
-                if (direction.type == ElementType.VARIABLE) {
-                    slrTable.add(state, direction, Action.go(nextState));
+                if (direction.type == VARIABLE) {
+                    slrTable.add(key(state, direction), go(nextState));
                 } else {
-                    slrTable.add(state, direction, Action.shift(nextState));
+                    slrTable.add(key(state, direction), shift(nextState));
                 }
             }
             for (Rule rule : item.kernel()) {
                 if (rule.isFinal()) {
                     if (rule.left == grammar.rules().get(0).left) {
-                        slrTable.add(state, Element.terminal(0), Action.accept());
+                        slrTable.add(key(state, terminal(0)), accept());
                     } else {
                         Set<Element> follows = followSets.get(rule.left);
                         for (Element follow : follows) {
                             int ruleIndex = grammar.rules().indexOf(rule.reset());
-                            slrTable.add(state, follow, Action.reduce(ruleIndex));
+                            slrTable.add(key(state, follow), reduce(ruleIndex));
                         }
                     }
                 }
