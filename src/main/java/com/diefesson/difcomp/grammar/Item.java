@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class Item {
     private final Set<Rule> kernel, closure;
 
-    public Item(Set<Rule> kernel, Set<Rule> closure) {
+    private Item(Set<Rule> kernel, Set<Rule> closure) {
         this.kernel = kernel;
         this.closure = closure;
     }
@@ -88,7 +88,7 @@ public class Item {
         return items;
     }
 
-    public static Item start(Grammar grammar) {
+    private static Item start(Grammar grammar) {
         Rule firstRule = grammar.rules().get(0);
         Set<Rule> kernel = Set.of(firstRule);
         Set<Rule> closure = computeClosure(grammar, kernel);

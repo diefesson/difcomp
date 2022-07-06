@@ -55,6 +55,10 @@ public class SLRTable {
         return actions.get(0);
     }
 
+    public boolean hasEntry(SLRKey key) {
+        return getList(key).size() > 0;
+    }
+
     protected void add(SLRKey key, Action action) {
         List<Action> actions = table.get(key);
         if (actions == null) {

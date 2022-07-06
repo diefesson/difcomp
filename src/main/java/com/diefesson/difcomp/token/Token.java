@@ -1,5 +1,7 @@
 package com.diefesson.difcomp.token;
 
+import com.diefesson.difcomp.grammar.Element;
+
 public class Token {
 
     public final DocPos position;
@@ -16,6 +18,10 @@ public class Token {
         this.typeId = typeId;
         this.lexeme = lexeme;
         this.ignore = ignore;
+    }
+
+    public Element element() {
+        return Element.terminal(typeId);
     }
 
     @Override

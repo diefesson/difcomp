@@ -11,7 +11,7 @@ import com.diefesson.difcomp.error.UnknownCharSequenceException;
 import com.diefesson.difcomp.token.DocPos;
 import com.diefesson.difcomp.token.Token;
 
-public class Lexer implements AutoCloseable {
+public class Lexer implements TokenSource, AutoCloseable {
 
     private final Scanner scanner;
     private final int horizon;
@@ -19,6 +19,7 @@ public class Lexer implements AutoCloseable {
     private final List<Pattern> patterns;
     private final List<LexerHandler> handlers;
     private final LexerStatistics statistics;
+    private Token current;
 
     public Lexer(Reader reader) {
         this(reader, 0);
@@ -35,6 +36,7 @@ public class Lexer implements AutoCloseable {
         this.patterns = new ArrayList<>();
         this.handlers = new ArrayList<>();
         this.statistics = new LexerStatistics();
+        this.current = null;
     }
 
     public void on(String pattern, LexerHandler handler) {
@@ -42,7 +44,26 @@ public class Lexer implements AutoCloseable {
         handlers.add(handler);
     }
 
+    @Override
     public Token next() throws LexerException {
+        if (current == null) {
+            return findNext();
+        } else {
+            Token token = current;
+            current = null;
+            return token;
+        }
+    }
+
+    @Override
+    public Token peek() throws LexerException {
+        if (current == null) {
+            current = findNext();
+        }
+        return current;
+    }
+
+    private Token findNext() throws LexerException {
         Token token;
         do {
             token = tryNext();
