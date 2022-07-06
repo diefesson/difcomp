@@ -26,14 +26,30 @@ public class Element {
         return new Element(ElementType.EMPTY, -1, null);
     }
 
+    public String simpleName() {
+        switch (type) {
+            case TERMINAL:
+                return String.valueOf(tokenId);
+            case VARIABLE:
+                return variable;
+            case EMPTY:
+                return "e";
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
+    @Override
     public int hashCode() {
         switch (type) {
             case TERMINAL:
                 return tokenId;
             case VARIABLE:
                 return variable.hashCode();
-            default: // case EMPTY:
+            case EMPTY: // case EMPTY:
                 return 0;
+            default:
+                throw new IllegalStateException();
         }
     }
 
@@ -56,8 +72,10 @@ public class Element {
                 return "< Terminal %s >".formatted(tokenId);
             case VARIABLE:
                 return "< Variable %s >".formatted(variable);
-            default: // case Empty
+            case EMPTY:
                 return "< Empty >";
+            default:
+                throw new IllegalStateException();
         }
     }
 

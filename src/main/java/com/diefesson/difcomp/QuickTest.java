@@ -1,10 +1,10 @@
 package com.diefesson.difcomp;
 
+import java.util.List;
+
 import com.diefesson.difcomp.error.GrammarException;
-import com.diefesson.difcomp.grammar.Element;
 import com.diefesson.difcomp.grammar.Grammar;
 import com.diefesson.difcomp.grammar.Item;
-import com.diefesson.difcomp.grammar.Rule;
 
 public class QuickTest {
 
@@ -20,17 +20,11 @@ public class QuickTest {
                     .rule("M", "C")
                     .rule("C", 3)
                     .build();
-            Item item = Item.start(grammar);
-            item = item.next(grammar, Element.variable("M"));
-            System.out.println("Kernel: ");
-            for (Rule rule : item.kernel()) {
-                System.out.printf("\t%s%n", rule);
+            List<Item> items = Item.computeItems(grammar);
+            for (int i = 0; i < items.size(); i++) {
+                System.out.println(i + ":");
+                System.out.println(items.get(i));
             }
-            System.out.println("Closure: ");
-            for (Rule rule : item.closure()) {
-                System.out.printf("\t%s%n", rule);
-            }
-
         } catch (GrammarException e) {
             e.printStackTrace();
         }

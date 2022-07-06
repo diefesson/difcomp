@@ -35,6 +35,13 @@ public class Rule {
         return new Rule(left, newPrefix, newRight);
     }
 
+    public Rule reset() {
+        List<Element> newRight = new ArrayList<>();
+        newRight.addAll(prefix);
+        newRight.addAll(right);
+        return new Rule(left, newRight);
+    }
+
     public boolean isFinal() {
         return right.isEmpty();
     }
@@ -42,20 +49,20 @@ public class Rule {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(left.variable).append(" ->");
+        builder.append(left.simpleName()).append(" ->");
         for (Element element : prefix) {
-            builder.append(" ").append(element);
+            builder.append(" ").append(element.simpleName());
         }
         builder.append(" .");
         for (Element element : right) {
-            builder.append(" ").append(element);
+            builder.append(" ").append(element.simpleName());
         }
         return builder.toString();
     }
 
     @Override
     public int hashCode() {
-        return left.hashCode() + right.hashCode();
+        return 2 * left.hashCode() + 3 * prefix.hashCode() + 5 * right.hashCode();
     }
 
     @Override
@@ -64,6 +71,6 @@ public class Rule {
             return false;
         }
         Rule o = (Rule) other;
-        return left.equals(o.left) && right.equals(o.right);
+        return left.equals(o.left) && prefix.equals(o.prefix) && right.equals(o.right);
     }
 }

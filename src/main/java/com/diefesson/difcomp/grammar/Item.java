@@ -1,8 +1,10 @@
 package com.diefesson.difcomp.grammar;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,9 +39,10 @@ public class Item {
 
     public Set<Item> nexts(Grammar grammar) {
         return closure.stream()
+                .filter((rule) -> !rule.isFinal())
                 .map((rule) -> rule.right().get(0))
                 .map((reading) -> next(grammar, reading))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override
@@ -54,6 +57,36 @@ public class Item {
         }
         Item o = (Item) other;
         return kernel.equals(o.kernel) && closure.equals(o.closure);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{ ");
+        sb.append(kernel.stream().map(Rule::toString).collect(Collectors.joining("; ")));
+        sb.append(" | ");
+        sb.append(closure.stream().map(Rule::toString).collect(Collectors.joining("; ")));
+        sb.append(" }");
+        return sb.toString();
+    }
+
+    public static List<Item> computeItems(Grammar grammar) {
+        Item start = start(grammar);
+        List<Item> items = new ArrayList<>();
+        Queue<Item> queue = new LinkedList<>();
+        items.add(start);
+        queue.add(start);
+        while (!queue.isEmpty()) {
+            Item next = queue.poll();
+            next.nexts(grammar).stream()
+                    .forEach((nextItem) -> {
+                        if (!items.contains(nextItem)) {
+                            items.add(nextItem);
+                            queue.add(nextItem);
+                        }
+                    });
+        }
+        return items;
     }
 
     public static Item start(Grammar grammar) {
@@ -80,15 +113,13 @@ public class Item {
             Rule next = queue.poll();
             if (!next.isFinal()) {
                 Element rightFirst = next.right().get(0);
-                Set<Rule> dependencies = grammar.rules()
-                        .stream()
-                        .filter((r) -> r.left.equals(rightFirst))
-                        .collect(Collectors.toSet());
-                for (Rule dependecy : dependencies) {
-                    if (closure.add(dependecy)) {
-                        queue.add(dependecy);
-                    }
-                }
+                grammar.rules().stream()
+                        .filter((rule) -> rule.left.equals(rightFirst))
+                        .forEach((dependecy) -> {
+                            if (closure.add(dependecy)) {
+                                queue.add(dependecy);
+                            }
+                        });
             }
         }
         return closure;
