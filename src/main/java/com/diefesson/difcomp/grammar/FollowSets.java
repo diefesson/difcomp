@@ -1,7 +1,7 @@
 
 package com.diefesson.difcomp.grammar;
 
-import static com.diefesson.difcomp.token.CommonTokens.END;
+import static com.diefesson.difcomp.lexer.CommonTokens.END;
 
 import java.util.HashMap;
 import java.util.HashSet;

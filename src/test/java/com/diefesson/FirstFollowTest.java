@@ -3,6 +3,7 @@ package com.diefesson;
 import static com.diefesson.difcomp.grammar.Element.empty;
 import static com.diefesson.difcomp.grammar.Element.terminal;
 import static com.diefesson.difcomp.grammar.Element.variable;
+import static com.diefesson.difcomp.lexer.CommonTokens.END;
 import static com.diefesson.difcomp.samples.NumberGrammar.numberGrammar;
 import static com.diefesson.difcomp.samples.NumberTokens.ONE;
 import static com.diefesson.difcomp.samples.NumberTokens.THREE;
@@ -11,7 +12,6 @@ import static com.diefesson.difcomp.samples.NumberVariables.A;
 import static com.diefesson.difcomp.samples.NumberVariables.B;
 import static com.diefesson.difcomp.samples.NumberVariables.C;
 import static com.diefesson.difcomp.samples.NumberVariables.S;
-import static com.diefesson.difcomp.token.CommonTokens.END;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Set;

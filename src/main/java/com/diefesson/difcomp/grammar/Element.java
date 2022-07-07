@@ -2,7 +2,7 @@ package com.diefesson.difcomp.grammar;
 
 import java.util.Objects;
 
-import com.diefesson.difcomp.token.TokenType;
+import com.diefesson.difcomp.lexer.TokenType;
 
 public class Element {
 

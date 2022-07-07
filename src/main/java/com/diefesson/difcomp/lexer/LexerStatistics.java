@@ -1,7 +1,5 @@
 package com.diefesson.difcomp.lexer;
 
-import com.diefesson.difcomp.token.DocPos;
-
 class LexerStatistics {
 
     private int row = 0;

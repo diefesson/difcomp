@@ -1,6 +1,6 @@
 package com.diefesson.difcomp.samples;
 
-import com.diefesson.difcomp.token.TokenType;
+import com.diefesson.difcomp.lexer.TokenType;
 
 public enum NumberTokens implements TokenType {
 

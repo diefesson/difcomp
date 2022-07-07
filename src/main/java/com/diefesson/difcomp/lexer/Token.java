@@ -1,4 +1,4 @@
-package com.diefesson.difcomp.token;
+package com.diefesson.difcomp.lexer;
 
 import com.diefesson.difcomp.grammar.Element;
 

@@ -3,8 +3,8 @@ package com.diefesson.difcomp.util;
 import java.util.List;
 
 import com.diefesson.difcomp.error.LexerException;
+import com.diefesson.difcomp.lexer.Token;
 import com.diefesson.difcomp.lexer.TokenSource;
-import com.diefesson.difcomp.token.Token;
 
 public class ListTokenSource implements TokenSource {
 

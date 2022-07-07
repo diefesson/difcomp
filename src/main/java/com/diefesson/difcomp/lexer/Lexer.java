@@ -1,6 +1,6 @@
 package com.diefesson.difcomp.lexer;
 
-import static com.diefesson.difcomp.token.CommonTokens.END;
+import static com.diefesson.difcomp.lexer.CommonTokens.END;
 
 import java.io.Reader;
 import java.util.ArrayList;
@@ -10,8 +10,7 @@ import java.util.regex.Pattern;
 
 import com.diefesson.difcomp.error.LexerException;
 import com.diefesson.difcomp.error.UnknownCharSequenceException;
-import com.diefesson.difcomp.token.DocPos;
-import com.diefesson.difcomp.token.Token;
+import com.diefesson.difcomp.lexer.handlers.LexerHandler;
 
 public class Lexer implements TokenSource, AutoCloseable {
 

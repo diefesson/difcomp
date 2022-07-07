@@ -1,7 +1,6 @@
 package com.diefesson.difcomp.lexer;
 
 import com.diefesson.difcomp.error.LexerException;
-import com.diefesson.difcomp.token.Token;
 
 public interface TokenSource {
 

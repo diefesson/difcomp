@@ -2,12 +2,12 @@ package com.diefesson.difcomp.parser;
 
 import static com.diefesson.difcomp.grammar.Element.terminal;
 import static com.diefesson.difcomp.grammar.ElementType.VARIABLE;
+import static com.diefesson.difcomp.lexer.CommonTokens.END;
 import static com.diefesson.difcomp.parser.Action.accept;
 import static com.diefesson.difcomp.parser.Action.go;
 import static com.diefesson.difcomp.parser.Action.reduce;
 import static com.diefesson.difcomp.parser.Action.shift;
 import static com.diefesson.difcomp.parser.SLRKey.key;
-import static com.diefesson.difcomp.token.CommonTokens.END;
 
 import java.util.ArrayList;
 import java.util.Collections;

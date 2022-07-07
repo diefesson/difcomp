@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.diefesson.difcomp.error.GrammarException;
-import com.diefesson.difcomp.token.TokenType;
+import com.diefesson.difcomp.lexer.TokenType;
 
 public class GrammarBuilder {
 

@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.io.Reader;
 
 import com.diefesson.difcomp.error.LexerException;
+import com.diefesson.difcomp.lexer.CommonTokens;
 import com.diefesson.difcomp.lexer.Lexer;
-import com.diefesson.difcomp.rustlike.RustLikeLexer;
-import com.diefesson.difcomp.token.CommonTokens;
-import com.diefesson.difcomp.token.Token;
+import com.diefesson.difcomp.lexer.Token;
+import com.diefesson.difcomp.rustlike.RLLexer;
 
 public class Main {
 
@@ -18,7 +18,7 @@ public class Main {
     public static void runLexer(boolean debug, String path) {
         try (
                 Reader reader = new FileReader(path);
-                Lexer lexer = new RustLikeLexer(reader, debug);) {
+                Lexer lexer = new RLLexer(reader, debug);) {
             Token token;
             do {
                 token = lexer.next();

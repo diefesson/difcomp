@@ -1,6 +1,6 @@
 package com.diefesson.difcomp.rustlike;
 
-public final class Patterns {
+public final class RLPatterns {
 
     // Types
     public static final String TYPE_UNIT = annla("unit");
@@ -58,7 +58,7 @@ public final class Patterns {
     public static final String COMMENT_BLOCK_OPEN = "/\\*";
     public static final String COMMENT_BLOCK_CLOSE = "\\*/";
 
-    private Patterns() {
+    private RLPatterns() {
     }
 
     // TODO find a better name

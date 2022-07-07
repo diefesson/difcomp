@@ -1,4 +1,4 @@
-package com.diefesson.difcomp.token;
+package com.diefesson.difcomp.lexer;
 
 public enum CommonTokens implements TokenType {
 
