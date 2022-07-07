@@ -22,7 +22,7 @@ public class Main {
             Token token;
             do {
                 token = lexer.next();
-                System.out.printf("%08x %-20s | %-6s | %s%n",
+                System.out.printf("%08X %-20s | %-6s | %s%n",
                         token.type.id(),
                         token.type,
                         token.position,
