@@ -50,6 +50,7 @@ public final class RLPatterns {
     public static final String KW_ELSE = annla("else");
     public static final String KW_FUN = annla("fun");
     public static final String KW_RETURN = annla("return");
+    public static final String KW_AS = annla("as");
 
     // Identifier
     public static final String IDENTIFIER = annla("[[A-z]_][\\w_]*");

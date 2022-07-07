@@ -53,6 +53,7 @@ public enum RLTokens implements TokenType {
     KW_ELSE(0X0402),
     KW_FUN(0x0403),
     KW_RETURN(0x0404),
+    KW_AS(0x0405),
 
     // Identifier
     IDENTIFIER(0x0500),
