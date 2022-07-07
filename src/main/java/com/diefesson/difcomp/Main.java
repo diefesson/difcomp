@@ -8,7 +8,7 @@ import java.io.Reader;
 import com.diefesson.difcomp.error.LexerException;
 import com.diefesson.difcomp.lexer.Lexer;
 import com.diefesson.difcomp.rustlike.RustLikeLexer;
-import com.diefesson.difcomp.rustlike.TokenType;
+import com.diefesson.difcomp.token.CommonTokens;
 import com.diefesson.difcomp.token.Token;
 
 public class Main {
@@ -23,11 +23,11 @@ public class Main {
             do {
                 token = lexer.next();
                 System.out.printf("%08x %-20s | %-6s | %s%n",
-                        token.typeId,
-                        TokenType.fromId(token.typeId),
+                        token.type.id(),
+                        token.type,
                         token.position,
                         token.lexeme);
-            } while (token.typeId != 0);
+            } while (token.type != CommonTokens.END);
         } catch (LexerException e) {
             System.out.println(e.getMessage());
         } catch (FileNotFoundException e) {

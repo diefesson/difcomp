@@ -1,6 +1,8 @@
 package com.diefesson.difcomp.rustlike;
 
-public enum TokenType {
+import com.diefesson.difcomp.token.TokenType;
+
+public enum RLTokens implements TokenType {
 
     // Types
     TYPE_UNIT(0x0001),
@@ -58,17 +60,13 @@ public enum TokenType {
 
     public final int id;
 
-    private TokenType(int id) {
+    private RLTokens(int id) {
         this.id = id;
     }
 
-    public static TokenType fromId(int id) {
-        for (TokenType tt : values()) {
-            if (tt.id == id) {
-                return tt;
-            }
-        }
-        return null;
+    @Override
+    public int id() {
+        return id;
     }
 
 }

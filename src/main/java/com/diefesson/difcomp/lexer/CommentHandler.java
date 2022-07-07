@@ -1,5 +1,7 @@
 package com.diefesson.difcomp.lexer;
 
+import static com.diefesson.difcomp.token.CommonTokens.INVALID;
+
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -31,7 +33,7 @@ public class CommentHandler implements LexerHandler {
                 throw new LexerException("unclosed comment starting at %s".formatted(position));
             }
         }
-        return new Token(position, -1, comment.toString(), true);
+        return new Token(position, INVALID, comment.toString(), true);
     }
 
 }

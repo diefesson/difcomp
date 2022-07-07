@@ -1,5 +1,7 @@
 package com.diefesson.difcomp.lexer;
 
+import static com.diefesson.difcomp.token.CommonTokens.INVALID;
+
 import java.util.Scanner;
 
 import com.diefesson.difcomp.error.LexerException;
@@ -10,7 +12,7 @@ public class IgnoreHandler implements LexerHandler {
 
     @Override
     public Token handle(DocPos position, String match, Scanner scanner) throws LexerException {
-        return new Token(position, -1, match, true);
+        return new Token(position, INVALID, match, true);
     }
 
 }

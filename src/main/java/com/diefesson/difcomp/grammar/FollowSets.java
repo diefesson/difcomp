@@ -1,4 +1,7 @@
+
 package com.diefesson.difcomp.grammar;
+
+import static com.diefesson.difcomp.token.CommonTokens.END;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,7 +17,7 @@ public class FollowSets extends ElementSets {
 
     public static FollowSets calculateFollowSets(Grammar grammar, FirstSets firstSets) {
         FollowSets followSets = new FollowSets(new HashMap<>());
-        followSets.add(grammar.rules().get(0).left, Set.of(Element.terminal(0)));
+        followSets.add(grammar.rules().get(0).left, Set.of(Element.terminal(END)));
         boolean updated;
         do {
             updated = false;

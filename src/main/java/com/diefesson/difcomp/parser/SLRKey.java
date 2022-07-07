@@ -18,7 +18,7 @@ public class SLRKey {
 
     @Override
     public String toString() {
-        return "< %d %s >".formatted(state, element.simpleName());
+        return "( %d, %s )".formatted(state, element.simpleName());
     }
 
 }

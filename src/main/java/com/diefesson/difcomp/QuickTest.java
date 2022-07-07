@@ -1,5 +1,13 @@
 package com.diefesson.difcomp;
 
+import static com.diefesson.difcomp.samples.ExpressionTokens.CONST_VALUE;
+import static com.diefesson.difcomp.samples.ExpressionTokens.OP_ADD;
+import static com.diefesson.difcomp.samples.ExpressionTokens.OP_MUL;
+import static com.diefesson.difcomp.samples.ExpressionVariables.EXPRESSION;
+import static com.diefesson.difcomp.samples.ExpressionVariables.MULTI;
+import static com.diefesson.difcomp.samples.ExpressionVariables.SUM;
+import static com.diefesson.difcomp.samples.ExpressionVariables.VALUE;
+
 import java.util.List;
 
 import com.diefesson.difcomp.error.GrammarException;
@@ -16,12 +24,12 @@ public class QuickTest {
     public static void quickTest(String[] args) {
         try {
             Grammar grammar = Grammar.builder()
-                    .rule("I", "S")
-                    .rule("S", "S", 1, "M")
-                    .rule("S", "M")
-                    .rule("M", "M", 2, "C")
-                    .rule("M", "C")
-                    .rule("C", 3)
+                    .rule(EXPRESSION, SUM)
+                    .rule(SUM, SUM, OP_ADD, MULTI)
+                    .rule(SUM, MULTI)
+                    .rule(MULTI, MULTI, OP_MUL, MULTI)
+                    .rule(MULTI, VALUE)
+                    .rule(VALUE, CONST_VALUE)
                     .build();
             List<Item> items = Item.computeItems(grammar);
             SLRTable slrTable = SLRTable.compute(grammar);

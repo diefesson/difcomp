@@ -1,5 +1,7 @@
 package com.diefesson.difcomp.lexer;
 
+import static com.diefesson.difcomp.token.CommonTokens.END;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +86,7 @@ public class Lexer implements TokenSource, AutoCloseable {
             }
         }
         if (scanner.findWithinHorizon("\\G\\z", 1) != null) {
-            return new Token(position, 0, "");
+            return new Token(position, END, "");
         }
         throw new UnknownCharSequenceException(position);
     }

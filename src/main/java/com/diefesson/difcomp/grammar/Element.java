@@ -2,34 +2,36 @@ package com.diefesson.difcomp.grammar;
 
 import java.util.Objects;
 
+import com.diefesson.difcomp.token.TokenType;
+
 public class Element {
 
     public final ElementType type;
-    public final int tokenId;
+    public final TokenType tokenType;
     public final String variable;
 
-    private Element(ElementType type, int tokenId, String variable) {
+    private Element(ElementType type, TokenType tokenType, String variable) {
         this.type = type;
-        this.tokenId = tokenId;
+        this.tokenType = tokenType;
         this.variable = variable;
     }
 
-    public static Element terminal(int token) {
-        return new Element(ElementType.TERMINAL, token, null);
+    public static Element terminal(TokenType tokenType) {
+        return new Element(ElementType.TERMINAL, tokenType, null);
     }
 
     public static Element variable(String variable) {
-        return new Element(ElementType.VARIABLE, -1, variable);
+        return new Element(ElementType.VARIABLE, null, variable);
     }
 
     public static Element empty() {
-        return new Element(ElementType.EMPTY, -1, null);
+        return new Element(ElementType.EMPTY, null, null);
     }
 
     public String simpleName() {
         switch (type) {
             case TERMINAL:
-                return String.valueOf(tokenId);
+                return tokenType.toString();
             case VARIABLE:
                 return variable;
             case EMPTY:
@@ -43,7 +45,7 @@ public class Element {
     public int hashCode() {
         switch (type) {
             case TERMINAL:
-                return tokenId;
+                return tokenType.hashCode();
             case VARIABLE:
                 return variable.hashCode();
             case EMPTY: // case EMPTY:
@@ -60,7 +62,7 @@ public class Element {
         } else {
             Element other = (Element) obj;
             return Objects.equals(type, other.type)
-                    && tokenId == other.tokenId
+                    && Objects.equals(tokenType, other.tokenType)
                     && Objects.equals(variable, other.variable);
         }
     }
@@ -69,7 +71,7 @@ public class Element {
     public String toString() {
         switch (type) {
             case TERMINAL:
-                return "< Terminal %s >".formatted(tokenId);
+                return "< Terminal %s >".formatted(tokenType);
             case VARIABLE:
                 return "< Variable %s >".formatted(variable);
             case EMPTY:

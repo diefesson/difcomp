@@ -1,5 +1,9 @@
 package com.diefesson.difcomp.grammar;
 
+import static com.diefesson.difcomp.grammar.Element.empty;
+import static com.diefesson.difcomp.grammar.Element.terminal;
+import static com.diefesson.difcomp.grammar.Element.variable;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -7,8 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.diefesson.difcomp.error.GrammarException;
-
-import static com.diefesson.difcomp.grammar.Element.*;
+import com.diefesson.difcomp.token.TokenType;
 
 public class GrammarBuilder {
 
@@ -36,8 +39,8 @@ public class GrammarBuilder {
         for (Object r : right) {
             if (r instanceof String) {
                 ruleRight.add(variable((String) r));
-            } else if (r instanceof Integer) {
-                ruleRight.add(terminal((Integer) r));
+            } else if (r instanceof TokenType) {
+                ruleRight.add(terminal((TokenType) r));
             } else {
                 throw new IllegalArgumentException("Invalid argument: " + r);
             }
@@ -60,8 +63,8 @@ public class GrammarBuilder {
             if (r == null) {
                 throw new IllegalArgumentException("right can't contain null");
             }
-            if (!(r instanceof String || r instanceof Integer)) {
-                throw new IllegalArgumentException("right should contain only variable names and terminal token ids");
+            if (!(r instanceof String || r instanceof TokenType)) {
+                throw new IllegalArgumentException("right should contain only variable names and terminal token types");
             }
         }
     }

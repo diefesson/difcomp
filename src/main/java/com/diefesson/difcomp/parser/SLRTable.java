@@ -7,6 +7,7 @@ import static com.diefesson.difcomp.parser.Action.go;
 import static com.diefesson.difcomp.parser.Action.reduce;
 import static com.diefesson.difcomp.parser.Action.shift;
 import static com.diefesson.difcomp.parser.SLRKey.key;
+import static com.diefesson.difcomp.token.CommonTokens.END;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,7 +88,7 @@ public class SLRTable {
             for (Rule rule : item.kernel()) {
                 if (rule.isFinal()) {
                     if (rule.left == grammar.rules().get(0).left) {
-                        slrTable.add(key(state, terminal(0)), accept());
+                        slrTable.add(key(state, terminal(END)), accept());
                     } else {
                         Set<Element> follows = followSets.get(rule.left);
                         for (Element follow : follows) {
