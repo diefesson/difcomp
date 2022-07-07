@@ -3,25 +3,26 @@ package com.diefesson.difcomp.grammar;
 import java.util.Objects;
 
 import com.diefesson.difcomp.lexer.TokenType;
+import com.diefesson.difcomp.parser.VariableType;
 
 public class Element {
 
     public final ElementType type;
     public final TokenType tokenType;
-    public final String variable;
+    public final VariableType variableType;
 
-    private Element(ElementType type, TokenType tokenType, String variable) {
+    private Element(ElementType type, TokenType tokenType, VariableType variableType) {
         this.type = type;
         this.tokenType = tokenType;
-        this.variable = variable;
+        this.variableType = variableType;
     }
 
     public static Element terminal(TokenType tokenType) {
         return new Element(ElementType.TERMINAL, tokenType, null);
     }
 
-    public static Element variable(String variable) {
-        return new Element(ElementType.VARIABLE, null, variable);
+    public static Element variable(VariableType variableType) {
+        return new Element(ElementType.VARIABLE, null, variableType);
     }
 
     public static Element empty() {
@@ -33,7 +34,7 @@ public class Element {
             case TERMINAL:
                 return tokenType.toString();
             case VARIABLE:
-                return variable;
+                return variableType.toString();
             case EMPTY:
                 return "e";
             default:
@@ -47,7 +48,7 @@ public class Element {
             case TERMINAL:
                 return tokenType.hashCode();
             case VARIABLE:
-                return variable.hashCode();
+                return variableType.hashCode();
             case EMPTY: // case EMPTY:
                 return 0;
             default:
@@ -63,7 +64,7 @@ public class Element {
             Element other = (Element) obj;
             return Objects.equals(type, other.type)
                     && Objects.equals(tokenType, other.tokenType)
-                    && Objects.equals(variable, other.variable);
+                    && Objects.equals(variableType, other.variableType);
         }
     }
 
@@ -73,7 +74,7 @@ public class Element {
             case TERMINAL:
                 return "< Terminal %s >".formatted(tokenType);
             case VARIABLE:
-                return "< Variable %s >".formatted(variable);
+                return "< Variable %s >".formatted(variableType);
             case EMPTY:
                 return "< Empty >";
             default:

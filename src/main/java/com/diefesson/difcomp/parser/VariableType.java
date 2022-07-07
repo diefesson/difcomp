@@ -1,8 +1,6 @@
-package com.diefesson.difcomp.lexer;
+package com.diefesson.difcomp.parser;
 
-public interface TokenType {
-
-    int id();
+public interface VariableType {
 
     @Override
     int hashCode();

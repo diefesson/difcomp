@@ -1,11 +1,12 @@
 package com.diefesson.difcomp.samples;
 
-public class NumberVariables {
-        public static final String S = "S";
-        public static final String A = "A";
-        public static final String B = "B";
-        public static final String C = "C";
+import com.diefesson.difcomp.parser.VariableType;
 
-        private NumberVariables() {
-        }
+public enum NumberVariables implements VariableType {
+
+        S,
+        A,
+        B,
+        C;
+
 }
