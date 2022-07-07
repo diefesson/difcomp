@@ -10,13 +10,6 @@
 <type> ::=          <signed_type> | <float_type> | <bool_type> |
                     <char_type> | <string_type> | <unit_type>
 
-<ari_op> ::=    "+" | "-" | "*" | "/"
-<rel_op> ::=    "==" | "<=" | ">=" | "<" | ">"
-(* Python logical operators *)
-<log_op> ::=    "and" | "or"
-<not_op> ::=    "not"
-<bin_op> ::=    <ari_op> | <rel_op> | <log_op>
-
 <alpha> ::=         [A-Z] | [a-z]
 <number> ::=        [0-9]
 <alphanum> ::=      <alpha> | <number>
@@ -26,32 +19,52 @@
 <const_int> ::=     <number>+
 <const_bool> ::=    "true" | "false"
 <const_char> ::=    "'" <alphanum> "'"
-<cosnt_string> ::=  "\"" <alphanum>* "\""
+<const_string> ::=  "\"" <alphanum>* "\""
+<const> ::=      <const_float> | <const_int> | <const_bool> |
+                    <const_char> | <const_string>
 
-<arguments> ::= (<identifier> ("," <identifier>)*)?
+<not_op> ::=    "not" (* Python logical operators *)
+<log_op> ::=    "and" | "or"
+<rel_op> ::=    "==" | "<=" | ">=" | "<" | ">"
+<sum_op> ::=    "+" | "-"
+<mul_op> ::=    "*" | "/"
 
-<const_expr> ::=    <const_float> | <const_int> | <const_bool> | <const_char> | cosnt_string
-<conv_expr> ::=     <expression> as <type>
-<not_expr> ::=      <not_op> <expression>
-<bin_expr> ::=      <expression> <bin_op> <expression>
-<call_expr> ::=     <identifier> "(" <arguments> ")"
-<expression> ::=    <const_expr> | <not_expr> | <bin_expr> | <call_expr> | "(" <expression> ")"
+(* precedence control expressions *)
+<expr> ::= <log_expr>
+<log_expr> ::= <not_op> <log_expr>
+<log_expr> ::= <log_expr> <log_op> <rel_expr>
+<log_expr> ::= <rel_expr>
+<rel_expr> ::= <rel_expr> <rel_op> <sum_expr>
+<rel_expr> ::= <sum_expr>
+<sum_expr> ::= <sum_expr> <sum_op> <mul_expr>
+<sum_expr> ::= <mul_expr>
+<mul_expr> ::= <mul_expr> <mul_op> <leaf_expr>
+<mul_expr> ::= <leaf_expr>
+
+(* leaf expressions *)
+<const_expr> ::=    <const>
+<sub_expr> ::=      "(" <expr> ")"
+<conv_expr> ::=     <expr> as <type>
+<call_expr> ::=     <identifier> "(" <args> ")"
+<leaf_expr> ::=     <const_expr> | <sub_expr> | <conv_expr>
+                    <call_expr>
 
 (* C variable declaration *)
-<normal_statement> ::= (<type>? <identifier> "=")? <expression> ";"
+<normal_stmnt> ::= (<type>? <identifier> "=")? <expr> ";"
 
 (* Rust and Python/BASH based conditionals *)
-<if_statement> ::=          "if" <expression> <block>
-<elif_statement> ::=        "elif" <expression> <block>
-<else_statement> ::=        "else" <block>
-<conditional_statement> ::= <if_statement> <elif_statement>* <else_statement>?
+<if_stmnt> ::=          "if" <expr> <block>
+<elif_stmnt> ::=        "elif" <expr> <block>
+<else_stmnt> ::=        "else" <block>
+<conditional_stmnt> ::= <if_stmnt> <elif_stmnt>* <else_stmnt>?
 
-<return_statement> ::= "return" <expression> ";"
+<return_stmnt> ::= "return" <expr> ";"
 
-<statement> ::= (<normal_statement> | conditional_statement)
-<block> ::=     "{" <statement>* "}"
+<stmnt> ::= <normal_stmnt> | conditional_stmnt | <return_stmnt>
+<block> ::=     "{" <stmnt>* "}"
 
 (* Kotlin function declaration with C parameters *)
+<args> ::=          (<identifier> ("," <identifier>)*)?
 <param> ::=         <type> <identifier>
 <params> ::=        (param ("," <param>)*)?
 <function> ::=      "fun" <identifier> "(" <params> ")" ":" <type> <block>
