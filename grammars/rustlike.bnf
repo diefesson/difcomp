@@ -101,7 +101,8 @@
 <function_params> ::=   "(" <params> ")"
 <function_params> ::=   "(" ")"
 
-<function> ::=          "fun" <id> <function_params> ":" <type> <block>
+<function_header> ::=   "fun" <id> <function_params> ":" <type>
+<function> ::=          <function_header> <block>
 <functions> ::=         <functions> <function>
 <functions> ::=         <function>
 

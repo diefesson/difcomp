@@ -44,6 +44,7 @@ public enum RLVariables implements VariableType {
     PARAMS,
     CALL_ARGS,
     FUNCTION_PARAMS,
+    FUNCTION_HEADER,
     FUNCTION,
     FUNCTIONS,
     PROGRAM

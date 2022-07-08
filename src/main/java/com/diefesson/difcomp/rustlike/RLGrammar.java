@@ -94,7 +94,8 @@ public class RLGrammar {
                 .rule(CALL_ARGS, PUNC_ARG_OPEN, PUNC_ARG_CLOSE)
                 .rule(FUNCTION_PARAMS, PUNC_ARG_OPEN, PARAMS, PUNC_ARG_CLOSE)
                 .rule(FUNCTION_PARAMS, PUNC_ARG_OPEN, PUNC_ARG_CLOSE)
-                .rule(FUNCTION, KW_FUN, ID, FUNCTION_PARAMS, PUNC_TWO_DOTS, TYPE, BLOCK)
+                .rule(FUNCTION_HEADER, KW_FUN, ID, FUNCTION_PARAMS, PUNC_TWO_DOTS, TYPE)
+                .rule(FUNCTION, FUNCTION_HEADER, BLOCK)
                 .rule(FUNCTIONS, FUNCTIONS, FUNCTION)
                 .rule(FUNCTIONS, FUNCTION)
                 .build();
