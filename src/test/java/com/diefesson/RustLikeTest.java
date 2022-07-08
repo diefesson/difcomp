@@ -2,11 +2,14 @@ package com.diefesson;
 
 import static org.junit.Assert.assertNotEquals;
 
+import com.diefesson.difcomp.error.GrammarException;
+import com.diefesson.difcomp.rustlike.RLGrammar;
 import com.diefesson.difcomp.rustlike.RLTokens;
 
 import org.junit.Test;
 
 public class RustLikeTest {
+
     @Test
     public void uniqueTokenIds() {
         RLTokens[] tts = RLTokens.values();
@@ -19,5 +22,10 @@ public class RustLikeTest {
                         ttj.id);
             }
         }
+    }
+
+    @Test
+    public void grammarBuild() throws GrammarException {
+        RLGrammar.rlGrammar();
     }
 }

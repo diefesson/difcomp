@@ -66,7 +66,7 @@ public class RLLexer extends Lexer {
         on(RLPatterns.KW_RETURN, new SimpleHandler(RLTokens.KW_RETURN));
         on(RLPatterns.KW_AS, new SimpleHandler(RLTokens.KW_AS));
 
-        on(RLPatterns.IDENTIFIER, new SimpleHandler(RLTokens.IDENTIFIER));
+        on(RLPatterns.IDENTIFIER, new SimpleHandler(RLTokens.ID));
     }
 
 }

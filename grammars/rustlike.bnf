@@ -1,4 +1,4 @@
-<program> ::= <function>*
+<program> ::= <functions>
 
 (* Rust types *)
 <signed_type> ::=   "s32"
@@ -67,24 +67,36 @@
                     <call_expr>
 
 (* C variable declaration *)
-<normal_stmnt> ::= (<type>? <id> "=")? <expr> ";"
+<normal_stmnt> ::= <type> <id> ";"
+<normal_stmnt> ::= <type> <id> "=" <expr> ";"
+<normal_stmnt> ::= <id> <expr> ";"
 
 (* Rust and Python/BASH based conditionals *)
-<if_stmnt> ::=          "if" <expr> <block>
-<elif_stmnt> ::=        "elif" <expr> <block>
-<else_stmnt> ::=        "else" <block>
-<conditional_stmnt> ::= <if_stmnt> <elif_stmnt>* <else_stmnt>?
+<if_stmnt> ::=      "if" <expr> <block>
+<elif_stmnt> ::=    "elif" <expr> <block>
+<else_stmnt> ::=    "else" <block>
+<elifs> ::=         <elifs> <elif_stmnt>
+<elifs> ::=         <elif_stmnt>
+<cond_stmnt> ::=    <if_stmnt>        
+<cond_stmnt> ::=    <if_stmnt> <elifs>
+<cond_stmnt> ::=    <if_stmnt> <elifs> <else_stmnt>
 
 <return_stmnt> ::= "return" <expr> ";"
 
-<stmnt> ::= <normal_stmnt> | conditional_stmnt | <return_stmnt>
-<block> ::=     "{" <stmnt>* "}"
+<stmnt> ::=     <normal_stmnt> | cond_stmnt | <return_stmnt>
+<stmnts> ::=    <stmnts> <stmnt>
+<stmnts> ::=    <stmnt>
+<block> ::=     "{" <stmnts> "}"
 
 (* Kotlin function declaration with C parameters *)
-<args> ::=          (<id> ("," <id>)*)?
-<param> ::=         <type> <id>
-<params> ::=        (param ("," <param>)*)?
-<function> ::=      "fun" <id> "(" <params> ")" ":" <type> <block>
+<args> ::=      <args> "," <id>
+<args> ::=      <id>
+<param> ::=     <type> <id>
+<params> ::=    <params> "," <param>
+<params> ::     <param>
+<function> ::=  "fun" <id> "(" <params> ")" ":" <type> <block>
+<functions> ::= <functions> <function>
+<functions> ::= <function>
 
 (* Java comments *)
 <block_comment> ::= "/*" ignored characters "*/"

@@ -56,7 +56,7 @@ public enum RLTokens implements TokenType {
     KW_AS(0x0405),
 
     // Identifier
-    IDENTIFIER(0x0500),
+    ID(0x0500),
     ;
 
     public final int id;
