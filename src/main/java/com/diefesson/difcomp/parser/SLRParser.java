@@ -5,10 +5,8 @@ import static com.diefesson.difcomp.parser.SLRKey.key;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.diefesson.difcomp.error.LexerException;
 import com.diefesson.difcomp.error.ParserException;

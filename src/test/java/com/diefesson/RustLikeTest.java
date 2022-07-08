@@ -1,9 +1,15 @@
 package com.diefesson;
 
+import static com.diefesson.difcomp.rustlike.RLGrammar.rlGrammar;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import java.util.List;
+
 import com.diefesson.difcomp.error.GrammarException;
-import com.diefesson.difcomp.rustlike.RLGrammar;
+import com.diefesson.difcomp.parser.Action;
+import com.diefesson.difcomp.parser.SLRKey;
+import com.diefesson.difcomp.parser.SLRTable;
 import com.diefesson.difcomp.rustlike.RLTokens;
 
 import org.junit.Test;
@@ -26,6 +32,15 @@ public class RustLikeTest {
 
     @Test
     public void grammarBuild() throws GrammarException {
-        RLGrammar.rlGrammar();
+        rlGrammar();
+    }
+
+    @Test
+    public void noAmbiguity() throws GrammarException {
+        SLRTable table = SLRTable.compute(rlGrammar());
+        for (SLRKey key : table.keys()) {
+            List<Action> actions = table.getList(key);
+            assertEquals(1, actions.size());
+        }
     }
 }

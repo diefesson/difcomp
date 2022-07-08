@@ -62,7 +62,7 @@
 <id_expr> ::=       <id>
 <sub_expr> ::=      "(" <expr> ")"
 <conv_expr> ::=     <expr> as <type>
-<call_expr> ::=     <id> "(" <args> ")"
+<call_expr> ::=     <id> <call_args>
 <leaf_expr> ::=     <const_expr> | <sub_expr> | <conv_expr>
                     <call_expr>
 
@@ -87,6 +87,7 @@
 <stmnts> ::=    <stmnts> <stmnt>
 <stmnts> ::=    <stmnt>
 <block> ::=     "{" <stmnts> "}"
+<block> ::=     "{" "}"
 
 (* Kotlin function declaration with C parameters *)
 <args> ::=      <args> "," <id>
@@ -94,9 +95,15 @@
 <param> ::=     <type> <id>
 <params> ::=    <params> "," <param>
 <params> ::     <param>
-<function> ::=  "fun" <id> "(" <params> ")" ":" <type> <block>
-<functions> ::= <functions> <function>
-<functions> ::= <function>
+
+<call_args> ::=         "(" <args> ")"
+<call_args> ::=         "(" ")"
+<function_params> ::=   "(" <params> ")"
+<function_params> ::=   "(" ")"
+
+<function> ::=          "fun" <id> <function_params> ":" <type> <block>
+<functions> ::=         <functions> <function>
+<functions> ::=         <function>
 
 (* Java comments *)
 <block_comment> ::= "/*" ignored characters "*/"

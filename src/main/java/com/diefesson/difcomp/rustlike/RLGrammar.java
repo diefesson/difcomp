@@ -21,6 +21,7 @@ public class RLGrammar {
                 .rule(TYPE, TYPE_F32)
                 .rule(TYPE, TYPE_S32)
                 .rule(TYPE, TYPE_STRING)
+                .rule(TYPE, TYPE_UNIT)
                 // Constants
                 .rule(CONST, CONST_BOOL)
                 .rule(CONST, CONST_CHAR)
@@ -56,7 +57,7 @@ public class RLGrammar {
                 .rule(ID_EXPR, ID)
                 .rule(SUB_EXPR, PUNC_ARG_OPEN, EXPR, PUNC_ARG_CLOSE)
                 .rule(CONV_EXPR, EXPR, KW_AS, TYPE) /* Not SLR grammar compatible */
-                .rule(CALL_EXPR, ID, PUNC_ARG_OPEN, ARGS, PUNC_ARG_CLOSE)
+                .rule(CALL_EXPR, ID, CALL_ARGS)
                 .rule(LEAF_EXPR, CONST_EXPR)
                 .rule(LEAF_EXPR, ID_EXPR)
                 .rule(LEAF_EXPR, SUB_EXPR)
@@ -82,14 +83,19 @@ public class RLGrammar {
                 .rule(STMNTS, STMNTS, STMNT)
                 .rule(STMNTS, STMNT)
                 .rule(BLOCK, PUNC_BLOCK_OPEN, STMNTS, PUNC_ARG_CLOSE)
+                .rule(BLOCK, PUNC_BLOCK_OPEN, PUNC_BLOCK_CLOSE)
                 // Functions
                 .rule(ARGS, ARGS, PUNC_COMMA, ID)
                 .rule(ARGS, ID)
                 .rule(PARAM, TYPE, ID)
                 .rule(PARAMS, PARAMS, PUNC_COMMA, PARAM)
                 .rule(PARAMS, PARAM)
-                .rule(FUNCTION, KW_FUN, ID, PUNC_ARG_OPEN, PARAMS, PUNC_ARG_CLOSE, PUNC_TWO_DOTS, TYPE, BLOCK)
-                .rule(FUNCTIONS, FUNCTIONS)
+                .rule(CALL_ARGS, PUNC_ARG_OPEN, ARGS, PUNC_ARG_CLOSE)
+                .rule(CALL_ARGS, PUNC_ARG_OPEN, PUNC_ARG_CLOSE)
+                .rule(FUNCTION_PARAMS, PUNC_ARG_OPEN, PARAMS, PUNC_ARG_CLOSE)
+                .rule(FUNCTION_PARAMS, PUNC_ARG_OPEN, PUNC_ARG_CLOSE)
+                .rule(FUNCTION, KW_FUN, ID, FUNCTION_PARAMS, PUNC_TWO_DOTS, TYPE, BLOCK)
+                .rule(FUNCTIONS, FUNCTIONS, FUNCTION)
                 .rule(FUNCTIONS, FUNCTION)
                 .build();
     }

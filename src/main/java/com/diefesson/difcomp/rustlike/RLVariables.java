@@ -38,10 +38,12 @@ public enum RLVariables implements VariableType {
     STMNTS,
     BLOCK,
 
-    // Functions
+    // Functions and calls
     ARGS,
     PARAM,
     PARAMS,
+    CALL_ARGS,
+    FUNCTION_PARAMS,
     FUNCTION,
     FUNCTIONS,
     PROGRAM
