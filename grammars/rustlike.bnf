@@ -57,14 +57,15 @@
 <mul_expr> ::= <mul_expr> "/" <leaf_expr>
 <mul_expr> ::= <leaf_expr>
 
+<conv_expr> ::= <leaf_expr> as <type>
+<conv_expr> ::= <leaf_expr>
+
 (* leaf expressions *)
 <const_expr> ::=    <const>
 <id_expr> ::=       <id>
 <sub_expr> ::=      "(" <expr> ")"
-<conv_expr> ::=     <expr> as <type>
 <call_expr> ::=     <id> <call_args>
-<leaf_expr> ::=     <const_expr> | <sub_expr> | <conv_expr>
-                    <call_expr>
+<leaf_expr> ::=     <const_expr> | <id_expr> | <sub_expr> | <call_expr>
 
 (* C variable declaration *)
 <normal_stmnt> ::= <type> <id> ";"

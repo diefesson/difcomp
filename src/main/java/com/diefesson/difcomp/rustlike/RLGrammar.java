@@ -51,19 +51,20 @@ public class RLGrammar {
                 .rule(SUM_EXPR, SUM_EXPR, OP_SUB, MUL_EXPR)
                 .rule(SUM_EXPR, MUL_EXPR)
                 // Mul equivalents
-                .rule(MUL_EXPR, MUL_EXPR, OP_MUL, LEAF_EXPR)
-                .rule(MUL_EXPR, MUL_EXPR, OP_DIV, LEAF_EXPR)
-                .rule(MUL_EXPR, LEAF_EXPR)
+                .rule(MUL_EXPR, MUL_EXPR, OP_MUL, CONV_EXPR)
+                .rule(MUL_EXPR, MUL_EXPR, OP_DIV, CONV_EXPR)
+                .rule(MUL_EXPR, CONV_EXPR)
+                // Conversion
+                .rule(CONV_EXPR, LEAF_EXPR, KW_AS, TYPE) /* Causes reduce reduce conflict */
+                .rule(CONV_EXPR, LEAF_EXPR)
                 // Leaf expressions
                 .rule(CONST_EXPR, CONST)
                 .rule(ID_EXPR, ID)
                 .rule(SUB_EXPR, PUNC_ARG_OPEN, EXPR, PUNC_ARG_CLOSE)
-                .rule(CONV_EXPR, EXPR, KW_AS, TYPE) /* Not SLR grammar compatible */
                 .rule(CALL_EXPR, ID, CALL_ARGS)
                 .rule(LEAF_EXPR, CONST_EXPR)
                 .rule(LEAF_EXPR, ID_EXPR)
                 .rule(LEAF_EXPR, SUB_EXPR)
-                .rule(LEAF_EXPR, CONV_EXPR)
                 .rule(LEAF_EXPR, CALL_EXPR)
                 // Conditional statements
                 .rule(IF_STMNT, KW_IF, EXPR, BLOCK)
@@ -100,6 +101,6 @@ public class RLGrammar {
                 .rule(FUNCTION, FUNCTION_HEADER, BLOCK)
                 .rule(FUNCTIONS, FUNCTIONS, FUNCTION)
                 .rule(FUNCTIONS, FUNCTION)
-                .build();
+                .build(false);
     }
 }

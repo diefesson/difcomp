@@ -15,12 +15,12 @@ public enum RLVariables implements VariableType {
     REL_EXPR,
     SUM_EXPR,
     MUL_EXPR,
+    CONV_EXPR,
 
     // Leaf expressions
     CONST_EXPR,
     ID_EXPR,
     SUB_EXPR,
-    CONV_EXPR,
     CALL_EXPR,
     LEAF_EXPR,
 
