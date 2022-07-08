@@ -45,6 +45,7 @@ public class RLGrammar {
                 .rule(REL_EXPR, SUM_EXPR, OP_GE, SUM_EXPR)
                 .rule(REL_EXPR, SUM_EXPR, OP_LT, SUM_EXPR)
                 .rule(REL_EXPR, SUM_EXPR, OP_GT, SUM_EXPR)
+                .rule(REL_EXPR, SUM_EXPR)
                 // Sum equivalents
                 .rule(SUM_EXPR, SUM_EXPR, OP_ADD, MUL_EXPR)
                 .rule(SUM_EXPR, SUM_EXPR, OP_SUB, MUL_EXPR)
@@ -52,6 +53,7 @@ public class RLGrammar {
                 // Mul equivalents
                 .rule(MUL_EXPR, MUL_EXPR, OP_MUL, LEAF_EXPR)
                 .rule(MUL_EXPR, MUL_EXPR, OP_DIV, LEAF_EXPR)
+                .rule(MUL_EXPR, LEAF_EXPR)
                 // Leaf expressions
                 .rule(CONST_EXPR, CONST)
                 .rule(ID_EXPR, ID)
