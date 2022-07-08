@@ -1,5 +1,7 @@
 package com.diefesson.difcomp.parser;
 
+import java.util.Objects;
+
 import com.diefesson.difcomp.grammar.Element;
 
 public class SLRKey {
@@ -14,6 +16,20 @@ public class SLRKey {
 
     public static SLRKey key(int state, Element element) {
         return new SLRKey(state, element);
+    }
+
+    @Override
+    public int hashCode() {
+        return 2 * state + 3 * element.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SLRKey)) {
+            return false;
+        }
+        SLRKey other = (SLRKey) obj;
+        return state == other.state && Objects.equals(element, other.element);
     }
 
     @Override

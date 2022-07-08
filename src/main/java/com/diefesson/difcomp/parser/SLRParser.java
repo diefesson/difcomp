@@ -1,10 +1,14 @@
 package com.diefesson.difcomp.parser;
 
+import static com.diefesson.difcomp.grammar.Element.empty;
 import static com.diefesson.difcomp.parser.SLRKey.key;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.diefesson.difcomp.error.LexerException;
 import com.diefesson.difcomp.error.ParserException;
@@ -17,9 +21,10 @@ public class SLRParser {
 
     private final Grammar grammar;
     private final SLRTable table;
-    private final Deque<Integer> states;
-    private final Deque<Element> elements;
+    private final LinkedList<Integer> states;
+    private final LinkedList<Element> elements;
     private final TokenSource tokens;
+    private boolean pendingGo = false;
 
     public SLRParser(Grammar grammar, TokenSource tokens) {
         this.grammar = grammar;
@@ -29,36 +34,69 @@ public class SLRParser {
         this.tokens = tokens;
     }
 
+    public List<Integer> states() {
+        return Collections.unmodifiableList(states);
+    }
+
+    public List<Element> elements() {
+        return Collections.unmodifiableList(elements);
+    }
+
     // TODO: AST generation
 
-    public boolean cycle() throws LexerException, ParserException {
-        SLRKey key = key(states.peek(), tokens.peek().element());
-        if (table.hasEntry(key)) {
-            Action action = table.get(key);
+    public Action cycle() throws LexerException, ParserException {
+        Element peekedNext = tokens.peek().element();
+        Element peekedTop = elements.peekLast();
+        int peekedState = states.peekLast();
+        SLRKey actionKey = key(peekedState, peekedNext);
+        SLRKey emptyKey = key(peekedState, empty());
+        SLRKey goKey = key(peekedState, peekedTop);
+        Action action;
+        if (pendingGo) {
+            action = table.get(goKey);
+            states.add(action.value);
+            pendingGo = false;
+        } else if (table.hasEntry(actionKey)) {
+            action = table.get(actionKey);
             switch (action.type) {
                 case SHIFT:
-                    states.addFirst(action.value);
-                    elements.addFirst(tokens.peek().element());
-                    return false;
+                    states.addLast(action.value);
+                    elements.addLast(tokens.next().element());
+                    break;
                 case REDUCE:
                     Rule rule = grammar.rules().get(action.value);
                     int ruleSize = rule.right().size();
-                    for (int i = 0; i < ruleSize; i++) {
-                        states.pollFirst();
-                        elements.pollFirst();
-                    }
-                    elements.addFirst(rule.left);
-                    Action go = table.get(key(states.peekFirst(), elements.peekFirst()));
-                    states.add(go.value);
-                    return false;
+                    dropStates(ruleSize);
+                    consumeElements(ruleSize);
+                    elements.addLast(rule.left);
+                    pendingGo = true;
+                    break;
                 case ACCEPT:
-                    return true;
+                    break;
                 default:
-                    throw new IllegalStateException();
+                    throw new IllegalStateException("unexpected action: %s".formatted(action));
             }
+        } else if (table.hasEntry(emptyKey)) {
+            action = table.get(emptyKey);
+            states.addLast(action.value);
         } else {
-            throw new ParserException("unexpected %d token");
+            throw new ParserException("no action");
         }
+        return action;
+    }
+
+    private void dropStates(int count) {
+        for (int i = 0; i < count; i++) {
+            states.pollLast();
+        }
+    }
+
+    private List<Element> consumeElements(int count) {
+        List<Element> consumed = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            consumed.add(elements.pollLast());
+        }
+        return consumed;
     }
 
 }
