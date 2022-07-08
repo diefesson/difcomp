@@ -79,6 +79,7 @@ public class RLGrammar {
                 .rule(NORMAL_STMNT, TYPE, ID, PUNC_STMNT_END)
                 .rule(NORMAL_STMNT, TYPE, ID, PUNC_DEFINITION, EXPR, PUNC_STMNT_END)
                 .rule(NORMAL_STMNT, ID, PUNC_DEFINITION, EXPR, PUNC_STMNT_END)
+                .rule(NORMAL_STMNT, EXPR, PUNC_STMNT_END)
                 .rule(RETURN_STMNT, KW_RETURN, EXPR, PUNC_STMNT_END)
                 .rule(STMNT, NORMAL_STMNT)
                 .rule(STMNT, RETURN_STMNT)
@@ -88,8 +89,8 @@ public class RLGrammar {
                 .rule(BLOCK, PUNC_BLOCK_OPEN, STMNTS, PUNC_BLOCK_CLOSE)
                 .rule(BLOCK, PUNC_BLOCK_OPEN, PUNC_BLOCK_CLOSE)
                 // Functions
-                .rule(ARGS, ARGS, PUNC_COMMA, ID)
-                .rule(ARGS, ID)
+                .rule(ARGS, ARGS, PUNC_COMMA, EXPR)
+                .rule(ARGS, EXPR)
                 .rule(PARAM, TYPE, ID)
                 .rule(PARAMS, PARAMS, PUNC_COMMA, PARAM)
                 .rule(PARAMS, PARAM)

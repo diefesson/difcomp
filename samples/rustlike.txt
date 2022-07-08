@@ -1,3 +1,27 @@
+// this is a line comment
+fun calculate(s32 a, s32 b, s32 c): s32 {
+    return a * b + c;
+}
+
+/*
+    this
+    is
+    a
+    block
+    comment
+*/
 fun main(): unit {
-    s32 a;
+    s32 a = read_s32();
+    s32 b = read_s32();
+    s32 c = read_s32();
+    s32 value = calculate(a, b, c);
+    if value > 0 {
+        print("bigger than 0");
+    }
+    elif value == 0 {
+        print("equals than 0");
+    }
+    else {
+        print("less than 0");
+    }
 }

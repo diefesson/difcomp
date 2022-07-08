@@ -71,6 +71,7 @@
 <normal_stmnt> ::= <type> <id> ";"
 <normal_stmnt> ::= <type> <id> "=" <expr> ";"
 <normal_stmnt> ::= <id> <expr> ";"
+<normal_stmnt> ::= <expr> ";"
 
 (* Rust and Python/BASH based conditionals *)
 <if_stmnt> ::=      "if" <expr> <block>
@@ -91,8 +92,8 @@
 <block> ::=     "{" "}"
 
 (* Kotlin function declaration with C parameters *)
-<args> ::=      <args> "," <id>
-<args> ::=      <id>
+<args> ::=      <args> "," <expr>
+<args> ::=      <expr>
 <param> ::=     <type> <id>
 <params> ::=    <params> "," <param>
 <params> ::     <param>
