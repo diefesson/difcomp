@@ -1,6 +1,7 @@
 package com.diefesson;
 
 import static com.diefesson.difcomp.rustlike.RLGrammar.rlGrammar;
+import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -40,7 +41,10 @@ public class RustLikeTest {
         SLRTable table = SLRTable.compute(rlGrammar());
         for (SLRKey key : table.keys()) {
             List<Action> actions = table.getList(key);
-            assertEquals(1, actions.size());
+            assertEquals(
+                    "Conflict: " + actions.stream().map(Object::toString).collect(joining(", ")),
+                    1,
+                    actions.size());
         }
     }
 }

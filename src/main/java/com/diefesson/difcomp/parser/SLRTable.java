@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.diefesson.difcomp.error.ParserException;
 import com.diefesson.difcomp.grammar.Element;
@@ -51,7 +52,8 @@ public class SLRTable {
             throw new ParserException("no action for %s".formatted(key));
         }
         if (actions.size() > 1) {
-            throw new ParserException("ambiguous action for %s".formatted(key));
+            String conflicts = actions.stream().map(Object::toString).collect(Collectors.joining(", "));
+            throw new ParserException("ambiguous action for %s: %s".formatted(key, conflicts));
         }
         return actions.get(0);
     }

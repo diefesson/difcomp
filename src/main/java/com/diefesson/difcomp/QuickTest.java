@@ -12,6 +12,7 @@ import com.diefesson.difcomp.error.LexerException;
 import com.diefesson.difcomp.error.ParserException;
 import com.diefesson.difcomp.grammar.Element;
 import com.diefesson.difcomp.grammar.Grammar;
+import com.diefesson.difcomp.grammar.Rule;
 import com.diefesson.difcomp.lexer.TokenSource;
 import com.diefesson.difcomp.parser.Action;
 import com.diefesson.difcomp.parser.SLRParser;
@@ -26,6 +27,12 @@ public class QuickTest {
             Grammar grammar = rlGrammar();
             TokenSource tokens = new RLLexer(new FileReader("samples/rustlike.txt"));
             SLRParser parser = new SLRParser(grammar, tokens);
+            // Grammar
+            for (int i = 0; i < grammar.rules().size(); i++) {
+                Rule rule = grammar.rules().get(i);
+                System.out.printf("%d: %s%n", i, rule);
+            }
+            // Parsing
             Action action;
             do {
                 String states = parser.states().stream().map(Object::toString).collect(Collectors.joining(", "));
