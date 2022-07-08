@@ -23,7 +23,13 @@ public class GrammarBuilder {
     }
 
     public Grammar build() throws GrammarException {
-        checkRefs();
+        return build(true);
+    }
+
+    public Grammar build(boolean check) throws GrammarException {
+        if (check) {
+            checkRefs();
+        }
         return new Grammar(rules);
     }
 

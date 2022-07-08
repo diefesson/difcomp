@@ -31,7 +31,7 @@ public class RLGrammar {
                 // Operator precendence
                 .rule(EXPR, OR_EXPR)
                 // Or
-                .rule(OR_EXPR, OR_EXPR, OP_OR, OR_EXPR)
+                .rule(OR_EXPR, OR_EXPR, OP_OR, AND_EXPR)
                 .rule(OR_EXPR, AND_EXPR)
                 // And
                 .rule(AND_EXPR, AND_EXPR, OP_AND, NOT_EXPR)
@@ -82,7 +82,7 @@ public class RLGrammar {
                 .rule(STMNT, COND_STMNT)
                 .rule(STMNTS, STMNTS, STMNT)
                 .rule(STMNTS, STMNT)
-                .rule(BLOCK, PUNC_BLOCK_OPEN, STMNTS, PUNC_ARG_CLOSE)
+                .rule(BLOCK, PUNC_BLOCK_OPEN, STMNTS, PUNC_BLOCK_CLOSE)
                 .rule(BLOCK, PUNC_BLOCK_OPEN, PUNC_BLOCK_CLOSE)
                 // Functions
                 .rule(ARGS, ARGS, PUNC_COMMA, ID)

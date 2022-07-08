@@ -26,7 +26,7 @@ public class Token {
 
     @Override
     public String toString() {
-        return "< %s 0x%08x type %s >".formatted(position, type.id(), type, lexeme);
+        return "< %s 0x%08x %s %s >".formatted(position, type.id(), type, lexeme);
     }
 
 }
