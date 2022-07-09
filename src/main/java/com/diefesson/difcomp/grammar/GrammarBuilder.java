@@ -49,7 +49,7 @@ public class GrammarBuilder {
             } else if (r instanceof TokenType) {
                 ruleRight.add(terminal((TokenType) r));
             } else {
-                throw new IllegalArgumentException("Invalid argument: " + r);
+                throw new IllegalArgumentException("invalid argument: " + r);
             }
         }
         rules.add(new Rule(variable(left), ruleRight));
@@ -98,7 +98,7 @@ public class GrammarBuilder {
                     .map((v) -> v.variableType)
                     .map(VariableType::toString)
                     .collect(Collectors.joining(", "));
-            throw new GrammarException("Variable(s) %s are never generated".formatted(vars));
+            throw new GrammarException("variable(s) %s are never generated".formatted(vars));
         }
         ;
         if (!missingOnLeft.isEmpty()) {
@@ -107,7 +107,7 @@ public class GrammarBuilder {
                     .map((v) -> v.variableType)
                     .map(VariableType::toString)
                     .collect(Collectors.joining(", "));
-            throw new GrammarException("Variable(s) %s are not defined".formatted(vars));
+            throw new GrammarException("variable(s) %s are not defined".formatted(vars));
         }
     }
 

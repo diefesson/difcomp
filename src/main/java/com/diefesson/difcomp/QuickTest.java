@@ -17,16 +17,17 @@ import com.diefesson.difcomp.lexer.TokenSource;
 import com.diefesson.difcomp.parser.Action;
 import com.diefesson.difcomp.parser.SLRParser;
 import com.diefesson.difcomp.rustlike.RLLexer;
+import com.diefesson.difcomp.rustlike.RLParser;
 
 public class QuickTest {
 
-    public final static boolean ENABLE_QUICK_TEST = true;
+    public final static boolean ENABLE_QUICK_TEST = false;
 
     public static void quickTest(String[] args) {
         try {
             Grammar grammar = rlGrammar();
             TokenSource tokens = new RLLexer(new FileReader("samples/rustlike.txt"));
-            SLRParser parser = new SLRParser(grammar, tokens);
+            SLRParser parser = new RLParser(tokens);
             // Grammar
             for (int i = 0; i < grammar.rules().size(); i++) {
                 Rule rule = grammar.rules().get(i);
