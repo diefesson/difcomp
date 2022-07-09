@@ -101,7 +101,7 @@ public class Main {
 
     public static void printUsage() {
         System.out.println("usage: <command> <path>");
-        System.out.println("where <command> is \"lexer\" or \"lexerdebug\"");
+        System.out.println("where <command> is \"lexer\" or \"lexerdebug\" or \"parser\"");
         System.out.println("and <path> is the source file");
     }
 }
