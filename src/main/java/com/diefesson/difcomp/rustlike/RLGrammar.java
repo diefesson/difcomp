@@ -102,6 +102,6 @@ public class RLGrammar {
                 .rule(FUNCTION, FUNCTION_HEADER, BLOCK)
                 .rule(FUNCTIONS, FUNCTIONS, FUNCTION)
                 .rule(FUNCTIONS, FUNCTION)
-                .build(false);
+                .build();
     }
 }
