@@ -13,6 +13,7 @@ import com.diefesson.difcomp.error.ParserException;
 import com.diefesson.difcomp.grammar.Element;
 import com.diefesson.difcomp.grammar.Grammar;
 import com.diefesson.difcomp.grammar.Rule;
+import com.diefesson.difcomp.lexer.Token;
 import com.diefesson.difcomp.lexer.TokenSource;
 
 public class SLRParser {
@@ -43,12 +44,12 @@ public class SLRParser {
     // TODO: AST generation
 
     public Action cycle() throws LexerException, ParserException {
-        Element peekedNext = tokens.peek().element();
-        Element peekedTop = elements.peekLast();
-        int peekedState = states.peekLast();
-        SLRKey actionKey = key(peekedState, peekedNext);
-        SLRKey emptyKey = key(peekedState, empty());
-        SLRKey goKey = key(peekedState, peekedTop);
+        Token token = tokens.peek();
+        Element element = elements.peekLast();
+        int state = states.peekLast();
+        SLRKey actionKey = key(state, token.element());
+        SLRKey emptyKey = key(state, empty());
+        SLRKey goKey = key(state, element);
         Action action;
         if (pendingGo) {
             action = table.get(goKey);
@@ -78,7 +79,8 @@ public class SLRParser {
             action = table.get(emptyKey);
             states.addLast(action.value);
         } else {
-            throw new ParserException("no action");
+            throw new ParserException("unexpected token \"%s\" of type %s at %s".formatted(
+                    token.lexeme, token.type, token.position));
         }
         return action;
     }
