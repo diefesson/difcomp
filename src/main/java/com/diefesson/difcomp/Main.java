@@ -1,60 +1,81 @@
 package com.diefesson.difcomp;
 
+import static com.diefesson.difcomp.lexer.CommonTokens.END;
+import static com.diefesson.difcomp.parser.ActionType.ACCEPT;
+import static java.util.stream.Collectors.joining;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import com.diefesson.difcomp.error.LexerException;
+import com.diefesson.difcomp.error.CompileException;
+import com.diefesson.difcomp.grammar.Element;
 import com.diefesson.difcomp.lexer.Lexer;
-import com.diefesson.difcomp.rustlike.RustLikeLexer;
-import com.diefesson.difcomp.rustlike.TokenType;
-import com.diefesson.difcomp.token.Token;
+import com.diefesson.difcomp.lexer.Token;
+import com.diefesson.difcomp.parser.Action;
+import com.diefesson.difcomp.parser.SLRParser;
+import com.diefesson.difcomp.rustlike.RLLexer;
+import com.diefesson.difcomp.rustlike.RLParser;
 
 public class Main {
 
-    public final static boolean QUICK_TEST = false;
     public final static String SAMPLE_PATH = "samples/rustlike.txt";
-
-    public static void quickTest() {
-        try (
-                Reader reader = new FileReader(SAMPLE_PATH);
-                RustLikeLexer lexer = new RustLikeLexer(reader);) {
-            Token token;
-            do {
-                token = lexer.next();
-                System.out.println("%s %s".formatted(TokenType.fromId(token.typeId), token));
-            } while (token.typeId != 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void runLexer(boolean debug, String path) {
         try (
                 Reader reader = new FileReader(path);
-                Lexer lexer = new RustLikeLexer(reader, debug);) {
+                Lexer lexer = new RLLexer(reader, debug);) {
             Token token;
             do {
                 token = lexer.next();
-                System.out.printf("%08x %-20s | %-6s | %s%n",
-                        token.typeId,
-                        TokenType.fromId(token.typeId),
+                System.out.printf("%08X %-20s | %-6s | %s%n",
+                        token.type.id(),
+                        token.type,
                         token.position,
                         token.lexeme);
-            } while (token.typeId != 0);
-        } catch (LexerException e) {
-            System.out.println(e.getMessage());
+            } while (token.type != END);
+        } catch (CompileException e) {
+            System.out.println("Compile error: " + e.getMessage());
         } catch (FileNotFoundException e) {
-            System.out.printf("Could not find file %s%n", path);
+            System.out.println("Could not find file: " + path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void runParser(String path) {
+        try (
+                Reader reader = new FileReader(path);
+                Lexer lexer = new RLLexer(reader);) {
+            SLRParser parser = new RLParser(lexer);
+            int cycle = 1;
+            Action action;
+            System.out.println("---------|");
+            do {
+                String states = parser.states().stream().map(Object::toString).collect(joining(", "));
+                String elements = parser.elements().stream().map(Element::simpleName).collect(joining(", "));
+                Token token = lexer.peek();
+                System.out.printf("%-8s | %05d%n", "CYCLE", cycle++);
+                System.out.printf("%-8s | %s%n", "NEXT", token);
+                System.out.printf("%-8s | %s%n", "STATES", states);
+                System.out.printf("%-8s | %s%n", "ELEMENTS", elements);
+                action = parser.cycle();
+                System.out.printf("%-8s | %s%n", "ACTION", action);
+                System.out.println("---------|");
+            } while (action.type != ACCEPT);
+        } catch (CompileException e) {
+            System.out.println("Compile error: " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not find file: " + path);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        if (QUICK_TEST) {
-            quickTest();
+        if (QuickTest.ENABLE_QUICK_TEST) {
+            QuickTest.quickTest(args);
             return;
         }
         if (args.length != 2) {
@@ -69,6 +90,9 @@ public class Main {
                 break;
             case "lexerdebug":
                 runLexer(true, path);
+                break;
+            case "parser":
+                runParser(path);
                 break;
             default:
                 printUsage();

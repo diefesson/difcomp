@@ -1,6 +1,6 @@
 package com.diefesson.difcomp.error;
 
-import com.diefesson.difcomp.token.DocPos;
+import com.diefesson.difcomp.lexer.DocPos;
 
 public class UnknownCharSequenceException extends LexerException {
 

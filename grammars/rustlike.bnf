@@ -1,0 +1,113 @@
+<program> ::= <functions>
+
+(* Rust types *)
+<signed_type> ::=   "s32"
+<float_type> ::=    "f32"
+<boolean_type> ::=  "bool"
+<char_type> ::=     "char"
+<string_type> ::=   "string"
+<unit_type> ::=     "unit" (* Kotlin type over Rust () type *)
+<type> ::=          <signed_type> | <float_type> | <bool_type> |
+                    <char_type> | <string_type> | <unit_type>
+
+<alpha> ::=         [A-Z] | [a-z]
+<number> ::=        [0-9]
+<alphanum> ::=      <alpha> | <number>
+<id> ::=            (<alpha> | "_") (<alphanum> | "_")*
+
+<const_float> ::=   (<number>* "." <number>+) | (<number>+ "." <number>*)
+<const_int> ::=     <number>+
+<const_bool> ::=    "true" | "false"
+<const_char> ::=    "'" <alphanum> "'"
+<const_string> ::=  "\"" <alphanum>* "\""
+<const> ::=      <const_float> | <const_int> | <const_bool> |
+                    <const_char> | <const_string>
+
+<not_op> ::=    "not" (* Python logical operators *)
+<or_op> ::=     "or"
+<and_op> ::=    "and"
+<rel_op> ::=    "==" |"<=" | ">=" | "<" | ">"
+<sum_op> ::=    "+" | "-"
+<mul_op> ::=    "*" | "/"
+
+(* precedence control expressions *)
+<expr> ::= <or_expr>
+
+<or_expr> ::= <or_expr> "or" <and_expr>
+<or_expr> ::= <and_expr>
+
+<and_expr> ::= <and_expr> "and" <not_expr>
+<and_expr> ::= <not_expr>
+
+<not_expr> ::= "not" <rel_expr>
+<not_expr> ::= <rel_expr>
+
+<rel_expr> ::= <sum_expr> "==" <sum_expr>  (* no relational op chaining *)
+<rel_expr> ::= <sum_expr> "<=" <sum_expr>
+<rel_expr> ::= <sum_expr> ">=" <sum_expr>
+<rel_expr> ::= <sum_expr> "<" <sum_expr>
+<rel_expr> ::= <sum_expr> ">" <sum_expr>
+<rel_expr> ::= <sum_expr>
+
+<sum_expr> ::= <sum_expr> "+" <mul_expr>
+<sum_expr> ::= <sum_expr> "-" <mul_expr>
+<sum_expr> ::= <mul_expr>
+
+<mul_expr> ::= <mul_expr> "*" <leaf_expr>
+<mul_expr> ::= <mul_expr> "/" <leaf_expr>
+<mul_expr> ::= <leaf_expr>
+
+<conv_expr> ::= <leaf_expr> as <type>
+<conv_expr> ::= <leaf_expr>
+
+(* leaf expressions *)
+<const_expr> ::=    <const>
+<id_expr> ::=       <id>
+<sub_expr> ::=      "(" <expr> ")"
+<call_expr> ::=     <id> <call_args>
+<leaf_expr> ::=     <const_expr> | <id_expr> | <sub_expr> | <call_expr>
+
+(* C variable declaration *)
+<normal_stmnt> ::= <type> <id> ";"
+<normal_stmnt> ::= <type> <id> "=" <expr> ";"
+<normal_stmnt> ::= <id> <expr> ";"
+<normal_stmnt> ::= <expr> ";"
+
+(* Rust and Python/BASH based conditionals *)
+<if_stmnt> ::=      "if" <expr> <block>
+<elif_stmnt> ::=    "elif" <expr> <block>
+<else_stmnt> ::=    "else" <block>
+<elifs> ::=         <elifs> <elif_stmnt>
+<elifs> ::=         <elif_stmnt>
+<cond_stmnt> ::=    <if_stmnt>        
+<cond_stmnt> ::=    <if_stmnt> <elifs>
+<cond_stmnt> ::=    <if_stmnt> <elifs> <else_stmnt>
+
+<return_stmnt> ::= "return" <expr> ";"
+
+<stmnt> ::=     <normal_stmnt> | cond_stmnt | <return_stmnt>
+<stmnts> ::=    <stmnts> <stmnt>
+<stmnts> ::=    <stmnt>
+<block> ::=     "{" <stmnts> "}"
+<block> ::=     "{" "}"
+
+(* Kotlin function declaration with C parameters *)
+<args> ::=      <args> "," <expr>
+<args> ::=      <expr>
+<param> ::=     <type> <id>
+<params> ::=    <params> "," <param>
+<params> ::     <param>
+
+<call_args> ::=         "(" <args> ")"
+<call_args> ::=         "(" ")"
+<function_params> ::=   "(" <params> ")"
+<function_params> ::=   "(" ")"
+
+<function_header> ::=   "fun" <id> <function_params> ":" <type>
+<function> ::=          <function_header> <block>
+<functions> ::=         <functions> <function>
+<functions> ::=         <function>
+
+(* Java comments *)
+<block_comment> ::= "/*" ignored characters "*/"
+<line_comment> ::=  "//" ignored characters "\\n"
