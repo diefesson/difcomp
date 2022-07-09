@@ -55,7 +55,7 @@ public class RLGrammar {
                 .rule(MUL_EXPR, MUL_EXPR, OP_DIV, CONV_EXPR)
                 .rule(MUL_EXPR, CONV_EXPR)
                 // Conversion
-                .rule(CONV_EXPR, LEAF_EXPR, KW_AS, TYPE) /* Causes reduce reduce conflict */
+                .rule(CONV_EXPR, LEAF_EXPR, KW_AS, TYPE)
                 .rule(CONV_EXPR, LEAF_EXPR)
                 // Leaf expressions
                 .rule(CONST_EXPR, CONST)
